@@ -13,6 +13,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../ContextAuth/ContextAuth";
 import { TfiTrash } from "react-icons/tfi";
+import api from "../../libs/axiosInstance";
 
 const CartSide = ({
   openCart,
@@ -40,8 +41,8 @@ const CartSide = ({
     console.log("Order items being sent:", orderItems);
 
     try {
-      const response = await axios.post(
-        "https://ftl-server.onrender.com/api/orders/create",
+      const response = await api.post(
+        "/orders/create",
         {
           orderItems: orderItems,
         },
