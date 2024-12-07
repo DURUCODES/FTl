@@ -7,11 +7,12 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
 
-  const login = (userToken, userData) => {
-    setToken(userToken);
+  const login = (token, userData) => {
+    setToken(token);
     setIsAuthenticated(true);
     setUser(userData); // Store user data in context
-    localStorage.setItem("authToken", userToken); // Save token in local storage
+    localStorage.setItem("token", token); // Save token in local storage
+    console.log("User logged in", "Token:", token);
     localStorage.setItem("userData", JSON.stringify(userData)); // Save user data in local storage
   };
 
@@ -21,6 +22,12 @@ export function AuthProvider({ children }) {
     const savedToken = localStorage.getItem("authToken");
     const savedUserData = localStorage.getItem("userData");
     if (savedToken && savedUserData) {
+      console.log(
+        "User logged in automatically",
+        JSON.parse(savedUserData),
+        "Token:",
+        savedToken
+      );
       setToken(savedToken);
       setIsAuthenticated(true);
       setUser(JSON.parse(savedUserData)); // Parse and load user data from localStorage

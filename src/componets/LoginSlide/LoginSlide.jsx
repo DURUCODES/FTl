@@ -4,6 +4,7 @@ import { useAuth } from "../../ContextAuth/ContextAuth";
 import axios from "axios";
 import UserProfile from "./UserProfile";
 import logoimg from "./logimg.jpg";
+import api from "../../libs/axiosInstance";
 
 const LoginSlide = ({ handleLoginClose, openLogin }) => {
   const [showMenu, setShowMenu] = useState(false);
@@ -41,16 +42,12 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
     setIsSubmitting(true); // Start submitting
     setLoading(true); // Show loading animation
 
-    axios
-      .post(
-        "https://ftl-server.onrender.com/api/auth/login",
-        { email, password },
-        { withCredentials: true }
-      )
+    api
+      .post("/auth/login", { email, password }, { withCredentials: true })
       .then((response) => {
-        const userData = { email, password }; // Add more user data as needed
-        console.log("Login successful", response.data);
-        login(response.data.token, userData); // Save token and user data in context
+        const token = response?.data?.token; // Extract token from response
+        const userData = response?.data?.user; // Extract user data from response
+        login(token, userData); // Save token and user data in context
         setTimeout(() => {
           handleLoginClose(); // Close login after 1 second
           setDotAnimation(""); // Reset dot animation
