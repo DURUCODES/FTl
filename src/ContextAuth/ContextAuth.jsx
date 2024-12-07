@@ -19,16 +19,16 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     // Check if a token and user data are already saved in localStorage
 
-    const savedToken = localStorage.getItem("authToken");
+    const token = localStorage.getItem("token");
     const savedUserData = localStorage.getItem("userData");
-    if (savedToken && savedUserData) {
+    if (token && savedUserData) {
       console.log(
         "User logged in automatically",
         JSON.parse(savedUserData),
         "Token:",
-        savedToken
+        token
       );
-      setToken(savedToken);
+      setToken(token);
       setIsAuthenticated(true);
       setUser(JSON.parse(savedUserData)); // Parse and load user data from localStorage
     }
@@ -38,7 +38,7 @@ export function AuthProvider({ children }) {
     setToken(null);
     setIsAuthenticated(false);
     setUser(null); // Clear user data
-    localStorage.removeItem("authToken"); // Clear token from localStorage
+    localStorage.removeItem("token"); // Clear token from localStorage
     localStorage.removeItem("userData"); // Clear user data from localStorage
   };
 

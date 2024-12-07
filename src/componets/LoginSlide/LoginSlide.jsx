@@ -65,8 +65,8 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
     setIsSubmitting(true); // Start submitting
     setLoading(true); // Show loading animation
 
-    axios
-      .post("https://ftl-server.onrender.com/api/auth/register", {
+    api
+      .post("/auth/register", {
         email,
         password,
         fullName,
