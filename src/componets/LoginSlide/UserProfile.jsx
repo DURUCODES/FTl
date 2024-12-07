@@ -27,6 +27,8 @@ const UserProfile = () => {
               alt=""
             />
           </div>
+
+          {/*      <span>{user?.fullName[0]}</span> */}
           <h1 class="my-1 text-center text-xl font-bold  text-gray-900">
             {user?.fullName}
           </h1>
