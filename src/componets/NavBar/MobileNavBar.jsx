@@ -8,7 +8,7 @@ const categoryMapping = {
   "t-shirt": 3,
   "long-sleeve": 2,
   "ftl-hat": 6,
-  "black-friday": 8,
+  "black-friday": 5,
 };
 
 const MobileNavBar = ({ closeMenuHandle, isOpen, setSelectedCategory }) => {
@@ -19,7 +19,7 @@ const MobileNavBar = ({ closeMenuHandle, isOpen, setSelectedCategory }) => {
     { id: 3, name: "T-Shirt" },
     { id: 2, name: "Long Sleeve" },
     { id: 6, name: "hat" },
-    { id: 8, name: "Black friday" },
+    { id: 5, name: "Black friday" },
   ];
 
   // Handle side menu visibility

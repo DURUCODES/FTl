@@ -9,7 +9,7 @@ const categoryMapping = {
   "long-sleeve": 2,
   "t-shirt": 3,
   "Ftl-hat": 6,
-  "black-friday": 8,
+  "black-friday": 5,
 };
 
 const Categories = () => {

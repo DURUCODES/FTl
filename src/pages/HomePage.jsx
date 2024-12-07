@@ -15,6 +15,7 @@ const HomePage = () => {
   const [activeTab, setActiveTab] = useState("top-sales"); // Default tab
   const [blackFridayProducts, setBlackFridayProducts] = useState([]); // Store filtered Black Friday products
   const [newArrivalProducts, setNewArrivalProducts] = useState([]); // Store filtered New Arrival products
+  const [topSales, setTopSales] = useState([]);
 
   // Fetch products from API on component mount
   useEffect(() => {
@@ -23,12 +24,19 @@ const HomePage = () => {
         const response = await axios.get(
           "https://ftl-server.onrender.com/api/products"
         );
-        console.log("response", response.data);
+
+        console.log("respiiii", response.data);
         dispatch(setProduct(response.data.data));
+
+        // Filter Top sales products based on categoryId (8 and 9)
+        const filterTopSales = response.data.data.filter(
+          (product) => product.categoryId === 8
+        );
+        setTopSales(filterTopSales);
 
         // Filter Black Friday products based on categoryId (8 and 9)
         const filteredBlackFridayProducts = response.data.data.filter(
-          (product) => product.categoryId === 8 || product.categoryId === 9
+          (product) => product.categoryId === 5
         );
         setBlackFridayProducts(filteredBlackFridayProducts);
 
@@ -56,9 +64,13 @@ const HomePage = () => {
       case "top-sales":
         return (
           <div className="grid grid-cols-2 md:grid-cols-4">
-            {products.slice(0, 6).map((item) => (
-              <ProductPage key={item.id} product={item} images={item.image} />
-            ))}
+            {topSales.length > 0 ? (
+              topSales.map((item) => (
+                <ProductPage key={item.id} product={item} images={item.image} />
+              ))
+            ) : (
+              <p>No products available for Black Friday specials.</p>
+            )}
           </div>
         );
       case "new-arrivals":
@@ -140,7 +152,7 @@ const HomePage = () => {
             activeTab === "top-sales"
               ? "/products"
               : activeTab === "black-friday"
-              ? "/black-friday"
+              ? "/collections/black-friday"
               : "/new-arrival"
           }
         >
