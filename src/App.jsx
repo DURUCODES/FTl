@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Footer from "./componets/Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CheckOutPage from "./pages/CheckOutPage";
 import { useState } from "react";
 import FilterDataPage from "./pages/FilterDataPage";
 import ResposiveNavBar from "./componets/NavBar/ResposiveNavBar";
@@ -19,6 +18,7 @@ import TopSales from "./componets/categoriesComponet/TopSales";
 import Longsleeves from "./componets/categoriesComponet/Longsleeves";
 import Hat from "./componets/categoriesComponet/Hat";
 import Tees from "./componets/categoriesComponet/Tees";
+import CheckoutPage from "./pages/CheckoutPage/CheckOutPage";
 
 function App() {
   const [order, setOrder] = useState(null);
@@ -35,7 +35,7 @@ function App() {
           <Route path="/products" element={<AllProduct />} />
           <Route
             path="/checkout"
-            element={<CheckOutPage setOrder={setOrder} />}
+            element={<CheckoutPage setOrder={setOrder} />}
           />
           <Route path="/search" element={<FilterDataPage />} />
           <Route

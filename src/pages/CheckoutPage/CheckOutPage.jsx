@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { TbTruckDelivery } from "react-icons/tb";
 import { SlCalender } from "react-icons/sl";
 import { FaPersonWalkingLuggage } from "react-icons/fa6";
 import { BsCreditCard2BackFill } from "react-icons/bs";
 import PaystackPop from "@paystack/inline-js";
-import amenx from "../assets/images/amex.png";
-import visa from "../assets/images/visa.png";
-import verve from "../assets/images/verve.png";
-import master from "../assets/images/master.svg";
-import mtn from "../assets/images/mtn.svg";
-import ama from "../assets/images/atm.png";
+import amenx from "../CheckoutPage/images/amex.png";
+import visa from "../CheckoutPage/images/visa.png";
+import verve from "../CheckoutPage/images/verve.png";
+import master from "../CheckoutPage/images/master.svg";
+import mtn from "../CheckoutPage/images/mtn.svg";
+import ama from "../CheckoutPage/images/atm.png";
+import { CiShoppingCart } from "react-icons/ci";
+import logo from "../CheckoutPage/images/Flogo.jpg";
 const CheckoutPage = () => {
   const location = useLocation(); // Use location hook to get passed state
   const [billingToggle, setBillingToggle] = useState(true);
@@ -147,8 +149,14 @@ const CheckoutPage = () => {
   return (
     <div className="  text-black ">
       <div className=" ">
-        <h3 className="text-xl font-semibold mb-4">CHECKOUT</h3>
-        <div className="flex flex-col md:flex-row justify-between md:space-x-4 mt-8 md:border-t-[2px]">
+        <div className="flex justify-between py-2 px-10 items-center">
+          <Link to="/">
+            {" "}
+            <img src={logo} className="w-[200px] h-[100px]" />
+          </Link>
+          <h3 className="text-xl font-semibold">CHECKOUT</h3>
+        </div>
+        <div className="flex flex-col md:flex-row justify-between md:space-x-4 md:border-t-[2px]">
           <div className="md:w-1/2 md:border-r-[2px] md:py-4 py-4 md:px-2  md:px-18 h-[100%]">
             {/* Billing Info Section */}
             {/* BILLING CONTACT  */}
@@ -329,19 +337,24 @@ const CheckoutPage = () => {
                         className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
                       />
                     </div>
-                    <div className="flex flex-col md:flex-row md:space-x-4 space-y-3 md:space-y-0">
-                      <div>
+                    <div className="flex flex-col md:flex-row md:space-x-4 space-y-3 md:space-y-0 w-full">
+                      <div className="w-full md:w-1/3">
+                        {" "}
+                        {/* Adjust width for responsiveness */}
                         <input
                           value={shippingInfo.city}
                           onChange={handleShippingChange}
-                          placeholder="City "
+                          placeholder="City"
                           className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
                         />
                         {errors.city && (
                           <p className="text-red-500 text-sm">{errors.city}</p>
                         )}
                       </div>
-                      <div>
+
+                      <div className="w-full md:w-1/3">
+                        {" "}
+                        {/* Adjust width for responsiveness */}
                         <input
                           value={shippingInfo.state}
                           onChange={handleShippingChange}
@@ -353,7 +366,9 @@ const CheckoutPage = () => {
                         )}
                       </div>
 
-                      <div>
+                      <div className="w-full md:w-1/3">
+                        {" "}
+                        {/* Adjust width for responsiveness */}
                         <input
                           value={shippingInfo.zip}
                           onChange={handleShippingChange}
