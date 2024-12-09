@@ -57,7 +57,10 @@ function App() {
 
   function NavBarWithConditionalRendering() {
     const location = useLocation(); // Now it's inside the Router context
-    return location.pathname !== "/checkout" ? <ResposiveNavBar /> : null;
+    return location.pathname !== "/checkout" &&
+      location.pathname !== "/order-confirmation" ? (
+      <ResposiveNavBar />
+    ) : null;
   }
 }
 

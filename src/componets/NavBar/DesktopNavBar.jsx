@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { BiMenuAltLeft } from "react-icons/bi";
+import { CiMenuFries } from "react-icons/ci";
 import { CiSearch } from "react-icons/ci";
 import { IoLogoWhatsapp } from "react-icons/io";
-import { GiShoppingCart } from "react-icons/gi";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { BsPersonCircle } from "react-icons/bs";
+import { CiShoppingCart } from "react-icons/ci";
 import logo from "./ftlLogo.jpg"; // Default logo
 import logo2 from "./ftl2.jpg"; // Logo for scroll position
 
@@ -20,14 +20,16 @@ const DesktopNavBar = ({
   const [textColor, setTextColor] = useState("text-black");
   const [logoImage, setLogoImage] = useState(logo); // State to control logo image
 
+  // Get the current location (route)
+  const location = useLocation();
+
   const handleScroll = () => {
     // Change the background color and text color based on scroll position
     if (window.scrollY > 0) {
       setBgColor("bg-black"); // Change to black when scrolled
       setTextColor("text-white"); // Change text to white
-      setLogoImage(logo2); // Change logo to logo2 when scrolled
     } else {
-      setBgColor("bg-white"); // Change back to white when at the top
+      setBgColor("bg-transparent"); // Change back to transparent when at the top
       setTextColor("text-black"); // Change text back to black
       setLogoImage(logo); // Change logo back to default when at top
     }
@@ -42,54 +44,56 @@ const DesktopNavBar = ({
     };
   }, []);
 
+  // Conditionally add 'fixed' class if we're on the homepage
+  const isHomePage = location.pathname === "/";
+
   return (
     <div
-      className={`flex justify-between items-center w-full z-10 md:px-2 h-[70px] md:h-[80px] transition-all duration-300 ${bgColor} ${textColor}`}
+      className={`flex justify-between items-center z-10 px-2 h-[54px] md:h-[90px] transition-all duration-300 
+        w-[98%] mx-auto ${
+          isHomePage ? "fixed top-4" : ""
+        }  transform rounded-xl border-white border-[1px] 
+        hover:bg-white hover:text-black text-black ${bgColor} ${textColor}`}
     >
       <div className="flex items-center md:space-x-8">
-        <BiMenuAltLeft
-          className={`text-[35px] cursor-pointer ${textColor}`}
+        <CiMenuFries
+          className="text-[35px] cursor-pointer mr-2"
           onClick={openMenuHandle}
         />
 
         <BsPersonCircle
-          className={`md:text-[30px] text-[20px] cursor-pointer ${textColor}`}
+          className="md:text-[30px] text-[20px] cursor-pointer"
           onClick={handleLoginOpen}
         />
       </div>
 
-      <div className="w-[500px] h-[200px]">
+      {/* Logo and tagline section */}
+      <div className="text-center">
         <Link to="/">
-          <img
-            src={logoImage} // Conditionally render the logo
-            alt="Logo"
-            className="object-contain w-full h-full transition-all duration-300" // Added transition for smooth logo change
-          />
+          <h1 className="md:text-[40px] text-[15px] font-semibold">
+            FEEL THE LIFESTYLE
+          </h1>
         </Link>
       </div>
 
       <div className="flex md:space-x-4 space-x-2 items-center">
         <span>
-          <IoLogoWhatsapp
-            className={`md:text-[30px] text-[18px] cursor-pointer hidden md:block ${textColor}`}
-          />
+          <IoLogoWhatsapp className="md:text-[30px] text-[18px] cursor-pointer hidden md:block" />
         </span>
         <span>
           <CiSearch
-            className={`md:text-[30px] text-[28px] cursor-pointer ${textColor}`}
+            className="md:text-[30px] text-[28px] cursor-pointer"
             onClick={openSearchHandle}
           />
         </span>
         <span className="flex items-center">
-          <GiShoppingCart
-            className={`md:text-[30px] text-[28px] cursor-pointer ${textColor}`}
+          <CiShoppingCart
+            className="md:text-[30px] text-[28px] cursor-pointer"
             onClick={handleCartOpen}
           />
 
           {totalQuantity.length > 0 && (
-            <span className="text-red-500 font-bold text-xl ">
-              {totalQuantity.length}
-            </span>
+            <span className="font-bold text-xl">{totalQuantity.length}</span>
           )}
         </span>
       </div>

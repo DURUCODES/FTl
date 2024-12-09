@@ -49,12 +49,12 @@ const ProductPage = ({ product, images }) => {
         <div onClick={() => handleShowModal(product)} className="w-full">
           <div className="mx-2 rounded my-4 relative transform transition-transform duration-300">
             {/* Product Image */}
-            <div className="w-full h-[250px] relative">
+            <div className="w-full h-[300px] relative">
               <img
                 src={product.image}
-                className="w-full h-full object-contain mx-auto rounded-md"
+                className="w-full h-full object-contain"
               />
-              <div className="absolute top-0 left-0 bg-green-500 text-white inline-block px-2 py-1 rounded">
+              <div className="absolute top-4 left-0 md:top-0 md:left-10 bg-green-500 text-white inline-block px-2 py-1 ">
                 <p className="text-[14px]">On Sale</p>
               </div>
             </div>

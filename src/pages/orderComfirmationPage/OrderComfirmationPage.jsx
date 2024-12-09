@@ -19,33 +19,18 @@ const OrderComfirmationPage = () => {
     dispatch(clearCart());
     navigate("/");
   };
-  const editInfoFunction = () => {
-    // Passing the current info as state to the checkout page
-    navigate("/checkout", {
-      state: {
-        billingInfo,
-        shippingInfo,
-        paymentMethod,
-      },
-    });
-  };
 
   return (
     <div className="container mx-auto py-8 px-4 md:px-16 lg:px-24">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-semibold text-indigo-600">
-            Thank You for Your Order
-          </h2>
-          <p className="text-lg text-gray-600 mt-2">
-            Your order has been placed successfully. You will receive an email
-            shortly.
-          </p>
-        </div>
+
+        <h2 className="text-3xl font-semibold text-center my-4 text-black">
+          Thank You for Shopping with us
+        </h2>
 
         {/* Order Confirmation Details */}
-        <div className="bg-white p-6 rounded-lg shadow-md space-y-6">
+        <div className="bg-white p-6 rounded-lg  space-y-6">
           {/* Billing Information */}
           <div className="space-y-2">
             <h3 className="text-2xl font-semibold text-gray-800">
@@ -55,7 +40,7 @@ const OrderComfirmationPage = () => {
               <p className="text-lg text-gray-700 flex items-center  ">
                 <img src={person} className="w-[30px] h-[25px]" />
                 <span className="mr-1 font-extrabold">:</span>
-                <span className="font-semibold">{billingInfo.name}</span>
+                <span className="font-semibold">{billingInfo.fullName}</span>
               </p>
               <p className="text-lg text-gray-700 flex items-center py-2">
                 <img src={email} className="w-[30px] h-[25px]" />{" "}
@@ -65,7 +50,7 @@ const OrderComfirmationPage = () => {
               <p className="text-lg text-gray-700 flex items-center">
                 <img src={phone} className="w-[30px] h-[25px]" />
                 <span className="mr-1">:</span>
-                <span className="font-semibold">{billingInfo.phone}</span>
+                <span className="font-semibold">{billingInfo.phoneNumber}</span>
               </p>
             </div>
           </div>
@@ -119,7 +104,7 @@ const OrderComfirmationPage = () => {
               <div className="border-t pt-4 mt-4">
                 <div className="flex justify-between text-lg font-semibold">
                   <span className="text-gray-800">Total Price:</span>
-                  <span className="text-indigo-600">
+                  <span className="text-gray-600">
                     ₦{cart.totalPrice.toFixed(2)}
                   </span>
                 </div>
@@ -131,17 +116,8 @@ const OrderComfirmationPage = () => {
         {/* Further Action Button */}
         <div className="mt-8 flex justify-around">
           <button
-            onClick={editInfoFunction}
-            className="bg-black text-white px-4 py-3 rounded-md font-semibold hover:bg-gray-700 transition duration-300 flex  items-center"
-          >
-            <span className="mr-2">
-              <FiEdit />
-            </span>
-            Edit info
-          </button>
-          <button
             onClick={continueShopping}
-            className="bg-indigo-600 text-white px-4 py-3 rounded-md font-semibold hover:bg-indigo-700 transition duration-300"
+            className="bg-black text-white px-4 py-3 w-full rounded-md font-semibold hover:bg-transparent hover:text-black hover:border-[1px] hover:border-black transition duration-300"
           >
             Continue Shopping
           </button>

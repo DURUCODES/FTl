@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { TbTruckDelivery } from "react-icons/tb";
-import { SlCalender } from "react-icons/sl";
 import { FaPersonWalkingLuggage } from "react-icons/fa6";
-import { BsCreditCard2BackFill } from "react-icons/bs";
 import PaystackPop from "@paystack/inline-js";
 import amenx from "../CheckoutPage/images/amex.png";
 import visa from "../CheckoutPage/images/visa.png";
@@ -15,24 +12,29 @@ import mtn from "../CheckoutPage/images/mtn.svg";
 import ama from "../CheckoutPage/images/atm.png";
 import { CiShoppingCart } from "react-icons/ci";
 import logo from "../CheckoutPage/images/Flogo.jpg";
+
 const CheckoutPage = () => {
   const location = useLocation(); // Use location hook to get passed state
-  const [billingToggle, setBillingToggle] = useState(true);
-  const [shippingToggle, setShippingToggle] = useState(false);
-  const [paymentToggle, setPaymentToggle] = useState(false);
+  const cart = useSelector((state) => state.cart);
+  const navigate = useNavigate();
 
-  // Add a state for delivery method
   const [deliveryMethod, setDeliveryMethod] = useState("delivery"); // default to 'delivery'
 
-  // Set initial state based on passed data (if available)
+  // Initialize billing and shipping information with default values or passed state
   const [billingInfo, setBillingInfo] = useState({
-    name: location.state?.billingInfo?.name || "",
+    fullName: location.state?.billingInfo?.fullName || "",
+    phoneNumber: location.state?.billingInfo?.phoneNumber || "",
     email: location.state?.billingInfo?.email || "",
-    phone: location.state?.billingInfo?.phone || "",
   });
 
   const [shippingInfo, setShippingInfo] = useState({
+    Firstname: location.state?.shippingInfo?.Firstname || "",
+    Lastname: location.state?.shippingInfo?.Lastname || "",
+    email: location.state?.shippingInfo?.email || "",
     address: location.state?.shippingInfo?.address || "",
+    company: location.state?.shippingInfo?.company || "",
+    apartment: location.state?.shippingInfo?.apartment || "",
+    phone: location.state?.shippingInfo?.phone || "",
     city: location.state?.shippingInfo?.city || "",
     zip: location.state?.shippingInfo?.zip || "",
     state: location.state?.shippingInfo?.state || "", // New state field
@@ -42,19 +44,12 @@ const CheckoutPage = () => {
     location.state?.paymentMethod || "Paystack"
   );
 
-  const cart = useSelector((state) => state.cart);
-  console.log("cart total", cart);
-  const navigate = useNavigate();
-
   const [errors, setErrors] = useState({});
 
   // Delivery fee constant
   const deliveryFee = 10000; // $10,000 delivery fee for delivery orders
 
-  //////PAYMENT PAYSTACK
   const apiKey = "pk_test_180c82d9fc2ccc057a89d1f74b5c68391950fda5";
-
-  // Handle form submission
 
   // Calculate total order price including delivery fee
   const calculateTotalPrice = () => {
@@ -62,7 +57,77 @@ const CheckoutPage = () => {
     return deliveryMethod === "delivery" ? cartTotal + deliveryFee : cartTotal;
   };
 
-  ////// HANDLE ORDER BUTTON
+  // Validate form data
+  const validateForm = () => {
+    const validationErrors = {};
+
+    // Shipping Info Validation
+    if (deliveryMethod === "delivery") {
+      if (!shippingInfo.Firstname)
+        validationErrors.Firstname = "First name is required";
+      if (!shippingInfo.email) validationErrors.email = "Email is required";
+      if (!shippingInfo.Lastname)
+        validationErrors.Lastname = "Last name is required";
+      if (!shippingInfo.address)
+        validationErrors.address = "Address is required";
+      if (!shippingInfo.city) validationErrors.city = "City is required";
+      if (!shippingInfo.zip) validationErrors.zip = "Zip code is required";
+      if (!shippingInfo.state) validationErrors.state = "State is required"; // Validate state
+
+      // Optional: Validate zip code format if needed
+      if (!shippingInfo.zip) {
+        validationErrors.zip = "Zip code format is invalid"; // Basic US zip code validation
+      }
+
+      // Optional: Validate phone number format if needed
+      if (!shippingInfo.phone) {
+        validationErrors.phone = "Phone number must be 10 digits"; // Phone number validation
+      }
+    }
+
+    // Billing Info Validation
+    if (!billingInfo.fullName) {
+      validationErrors.fullName = "Full name is required";
+    }
+    if (!billingInfo.email) {
+      validationErrors.billingEmail = "Email is required";
+    }
+    if (!billingInfo.phoneNumber) {
+      validationErrors.phoneNumber = "Phone number is required";
+    }
+
+    return validationErrors;
+  };
+
+  // Handle form changes
+  const handleShippingChange = (e) => {
+    const { name, value } = e.target;
+    setShippingInfo((prev) => ({ ...prev, [name]: value }));
+    if (value) {
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors[name]; // Remove error if field is filled
+        return newErrors;
+      });
+    }
+  };
+
+  const handleBillingChange = (e) => {
+    const { name, value } = e.target;
+    setBillingInfo({
+      ...billingInfo,
+      [name]: value,
+    });
+    if (value) {
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors[name]; // Remove error if field is filled
+        return newErrors;
+      });
+    }
+  };
+
+  // Handle order and payment submission
   const handleOrder = () => {
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
@@ -74,78 +139,33 @@ const CheckoutPage = () => {
 
     paystack.newTransaction({
       key: apiKey, // Use your actual Paystack public key
-      email: billingInfo.email,
+      email: shippingInfo.email,
       amount: calculateTotalPrice() * 100, // Convert to kobo
       currency: "NGN",
       onSuccess: (transaction) => {
-        // Extract transaction details
         const transactionDetails = {
           reference: transaction.reference, // Transaction reference number
           status: transaction.status, // Transaction status (e.g., 'success')
           transactionData: transaction, // Full transaction object (optional)
         };
 
-        // Create order details
+        // Create order details including billing and shipping info
         const orderDetails = {
           billingInfo,
           shippingInfo,
           paymentMethod,
           cart,
-          ...transactionDetails, // Include transaction details
+          ...transactionDetails,
         };
 
         // Navigate to the order-confirmation page with order details
         navigate("/order-confirmation", { state: orderDetails });
       },
       onCancel: () => {
-        // Payment was cancelled
         console.log("Transaction was cancelled.");
       },
     });
   };
-
-  // Validate form data
-  const validateForm = () => {
-    const validationErrors = {};
-    if (!billingInfo.name) validationErrors.name = "Name is required";
-    if (!billingInfo.email) validationErrors.email = "Email is required";
-    if (!billingInfo.phone) validationErrors.phone = "Phone is required";
-    if (deliveryMethod === "delivery") {
-      if (!shippingInfo.address)
-        validationErrors.address = "Address is required";
-      if (!shippingInfo.city) validationErrors.city = "City is required";
-      if (!shippingInfo.zip) validationErrors.zip = "Zip code is required";
-      if (!shippingInfo.state) validationErrors.state = "State is required"; // Validate state
-    }
-    return validationErrors;
-  };
-
-  const handleBillingChange = (e) => {
-    const { name, value } = e.target;
-    setBillingInfo((prev) => ({ ...prev, [name]: value }));
-
-    if (value) {
-      setErrors((prevErrors) => {
-        const newErrors = { ...prevErrors };
-        delete newErrors[name]; // Remove error if field is filled
-        return newErrors;
-      });
-    }
-  };
-
-  const handleShippingChange = (e) => {
-    const { name, value } = e.target;
-    setShippingInfo((prev) => ({ ...prev, [name]: value }));
-
-    if (value) {
-      setErrors((prevErrors) => {
-        const newErrors = { ...prevErrors };
-        delete newErrors[name]; // Remove error if field is filled
-        return newErrors;
-      });
-    }
-  };
-
   return (
     <div className="  text-black ">
       <div className=" ">
@@ -160,29 +180,30 @@ const CheckoutPage = () => {
           <div className="md:w-1/2 md:border-r-[2px] md:py-4 py-4 md:px-2  md:px-18 h-[100%]">
             {/* Billing Info Section */}
             {/* BILLING CONTACT  */}
-            <div className=" p-2  border-black border-[0px]">
+            <div className="p-2 border-black border-[0px]">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold mb-1">Contact</h3>
               </div>
 
-              <div className={`space-y-4 `}>
+              <div className="space-y-4">
                 <div>
                   <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    className="p-2 rounded w-full bg-white border-[1px] px-4 text-black placeholder:text-[10px]" // Added placeholder:text-[10px] to reduce placeholder size
-                    placeholder="Email or mobile number"
-                    value={billingInfo.name}
-                    onChange={handleBillingChange}
+                    type="email"
+                    id="email"
+                    name="email"
+                    className="p-2 rounded w-full bg-white border-[1px] px-4 text-black placeholder:text-[10px]"
+                    placeholder="Enter your email"
+                    value={shippingInfo.email}
+                    onChange={handleShippingChange}
                   />
-                  {errors.name && (
-                    <p className="text-red-500 text-sm">{errors.name}</p>
+                  {errors.email && (
+                    <p className="text-red-500 text-[10px] mt-2">
+                      {errors.email}
+                    </p>
                   )}
                 </div>
               </div>
             </div>
-
             {/* Delivery Method Section */}
             <div className="p-2 mb-0">
               <div className="flex items-center justify-between">
@@ -291,7 +312,9 @@ const CheckoutPage = () => {
                     </select>
 
                     {errors.country && (
-                      <p className="text-red-500 text-sm">{errors.country}</p>
+                      <p className="text-red-500 text-[10px]">
+                        {errors.country}
+                      </p>
                     )}
                   </div>
 
@@ -299,26 +322,59 @@ const CheckoutPage = () => {
 
                   <div className="space-y-3">
                     {/* Name Info */}
-                    <div className="flex flex-col md:flex-row md:space-x-4 space-y-3 md:space-y-0">
-                      <input
-                        placeholder="First name"
-                        className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
-                      />
+                    <div className="flex flex-col md:flex-row md:space-x-4 w-full space-y-3 md:space-y-0">
+                      <div className="w-full">
+                        <input
+                          name="Firstname" // <-- Added name attribute
+                          value={shippingInfo.Firstname}
+                          onChange={handleShippingChange}
+                          placeholder="First name"
+                          className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
+                        />
+                        {errors.Firstname && (
+                          <p className="text-red-500 text-[10px] mt-2">
+                            {errors.Firstname}
+                          </p>
+                        )}
+                      </div>
 
-                      <input
-                        placeholder="Last name"
-                        className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
-                      />
+                      <div className="w-full">
+                        <input
+                          name="Lastname" // <-- Added name attribute
+                          value={shippingInfo.Lastname}
+                          onChange={handleShippingChange}
+                          placeholder="Last name"
+                          className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
+                        />
+                        {errors.Lastname && (
+                          <p className="text-red-500 text-[10px] mt-2">
+                            {errors.Lastname}
+                          </p>
+                        )}
+                      </div>
                     </div>
+
+                    {/* Rest of the fields */}
                     <div>
                       <input
+                        name="company" // <-- Added name attribute
+                        value={shippingInfo.company}
+                        onChange={handleShippingChange}
                         placeholder="Company (optional)"
                         className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
                       />
+                      {errors.company && (
+                        <p className="text-red-500 text-[10px] mt-2">
+                          {errors.company}
+                        </p>
+                      )}
                     </div>
 
                     <div>
                       <input
+                        name="address" // <-- Added name attribute
+                        value={shippingInfo.address}
+                        onChange={handleShippingChange}
                         placeholder="Address"
                         className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
                       />
@@ -326,66 +382,74 @@ const CheckoutPage = () => {
 
                     <div>
                       <input
-                        placeholder="Company (optional)"
-                        className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
-                      />
-                    </div>
-
-                    <div>
-                      <input
+                        name="apartment" // <-- Added name attribute
+                        value={shippingInfo.apartment}
+                        onChange={handleShippingChange}
                         placeholder="Apartment ,suite ,etc. (optional)"
                         className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
                       />
                     </div>
+
                     <div className="flex flex-col md:flex-row md:space-x-4 space-y-3 md:space-y-0 w-full">
                       <div className="w-full md:w-1/3">
-                        {" "}
-                        {/* Adjust width for responsiveness */}
                         <input
+                          name="city" // <-- Added name attribute
                           value={shippingInfo.city}
                           onChange={handleShippingChange}
                           placeholder="City"
                           className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
                         />
                         {errors.city && (
-                          <p className="text-red-500 text-sm">{errors.city}</p>
+                          <p className="text-red-500 text-[10px] mt-2">
+                            {errors.city}
+                          </p>
                         )}
                       </div>
 
                       <div className="w-full md:w-1/3">
-                        {" "}
-                        {/* Adjust width for responsiveness */}
                         <input
+                          name="state" // <-- Added name attribute
                           value={shippingInfo.state}
                           onChange={handleShippingChange}
                           placeholder="State"
                           className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
                         />
                         {errors.state && (
-                          <p className="text-red-500 text-sm">{errors.state}</p>
+                          <p className="text-red-500 text-[10px] mt-2">
+                            {errors.state}
+                          </p>
                         )}
                       </div>
 
                       <div className="w-full md:w-1/3">
-                        {" "}
-                        {/* Adjust width for responsiveness */}
                         <input
+                          name="zip" // <-- Added name attribute
                           value={shippingInfo.zip}
                           onChange={handleShippingChange}
                           placeholder="Postal code (optional)"
                           className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
                         />
                         {errors.zip && (
-                          <p className="text-red-500 text-sm">{errors.zip}</p>
+                          <p className="text-red-500 text-[10px] mt-2">
+                            {errors.zip}
+                          </p>
                         )}
                       </div>
                     </div>
 
                     <div>
                       <input
+                        name="phone" // <-- Added name attribute
+                        value={shippingInfo.phone}
+                        onChange={handleShippingChange}
                         placeholder="Phone"
                         className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
                       />
+                      {errors.phone && (
+                        <p className="text-red-500 text-[10px] mt-2">
+                          {errors.phone}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -408,7 +472,49 @@ const CheckoutPage = () => {
                 </div>
               </div>
             )}
-
+            {/* BILLING INFO */}
+            <div className="p-2">
+              <div className="billing-info-section space-y-4">
+                <h2 className="text-lg font-semibold ">Billing Information</h2>
+                <input
+                  type="text"
+                  name="fullName"
+                  value={billingInfo.fullName}
+                  onChange={handleBillingChange}
+                  placeholder="Full Name"
+                  className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
+                />
+                {errors.fullName && (
+                  <p className="text-xs text-red-500 mt-2">{errors.fullName}</p>
+                )}
+                <input
+                  type="email"
+                  name="email"
+                  value={billingInfo.email}
+                  onChange={handleBillingChange}
+                  placeholder="Email"
+                  className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
+                />
+                {errors.billingEmail && (
+                  <p className="text-xs text-red-500 mt-2">
+                    {errors.billingEmail}
+                  </p>
+                )}
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  value={billingInfo.phoneNumber}
+                  onChange={handleBillingChange}
+                  placeholder="Phone Number"
+                  className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
+                />
+                {errors.phoneNumber && (
+                  <p className="text-xs text-red-500 mt-2">
+                    {errors.phoneNumber}
+                  </p>
+                )}
+              </div>
+            </div>
             {/* Payment Info Section */}
             <div className=" p-2 mt-6">
               <div className="flex items-center justify-between">

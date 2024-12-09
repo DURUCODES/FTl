@@ -126,13 +126,17 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
   return (
     <div>
       {openLogin && (
-        <div className="bg-black fixed bg-opacity-10 z-10 backdrop-blur-md h-[100%] top-0 left-0 w-full text-black">
+        <div className="bg-black fixed bg-opacity-10 z-10 backdrop-blur-md h-[100%] top-0 left-0 w-full text-black px-2">
           <div
-            className={`bg-white md:w-[400px] z-10 absolute left-0 top-0 h-screen w-[100%] px-3 py-4 transition-transform duration-300 ease-in-out ${
-              showMenu
-                ? "transform translate-x-0"
-                : "transform -translate-x-full"
-            }`}
+            className={`bg-white md:w-[400px] z-10 
+               absolute 
+               h-[95%]   w-[90%] rounded-md px-3 py-4 my-4
+              
+                transition-transform duration-300 ease-in-out ${
+                  showMenu
+                    ? "transform translate-x-0"
+                    : "transform -translate-x-full"
+                }`}
           >
             <div className="flex justify-between items-center">
               <h1 className="text-[20px] font-bold">
@@ -143,14 +147,12 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
                     {/* SIGNUP */}
                     <div className="flex flex-col items-center">
                       <img src={logoimg} className="w-[120px]" alt="Logo" />
-                      <h1 className="text-[25px] font-bold my-4">
+                      <h1 className="text-[20px] font-bold my-4">
                         Join the FTL Family!
                       </h1>
                       <p className="text-[14px] md:text-[15px] text-gray-600 text-center">
                         Join FTL and step into a world of style! 🛍️ Sign up now
-                        to discover the latest trends, exclusive offers, and
-                        personalized shopping experiences. Your journey to
-                        redefining your wardrobe starts here. ✨"
+                        ✨"
                       </p>
                     </div>
 
@@ -168,7 +170,7 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
                         required
                         value={userDetails.fullName} // Bind input to fullName in state
                         onChange={handleInputChange}
-                        className="py-2 bg-gray-50 outline-none  px-4"
+                        className="py-2 bg-gray-50 outline-none  px-4 placeholder:text-[12px]"
                       />
 
                       <label className="font-bold text-[15px] font-mono my-2">
@@ -181,7 +183,7 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
                         required
                         value={userDetails.email} // Bind input to email in state
                         onChange={handleInputChange}
-                        className="py-2 bg-gray-50 outline-none  px-4"
+                        className="py-2 bg-gray-50 outline-none  px-4 placeholder:text-[12px]"
                       />
 
                       <label className="font-bold text-[15px] font-mono my-2">
@@ -194,7 +196,7 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
                         required
                         value={userDetails.password} // Bind input to password in state
                         onChange={handleInputChange}
-                        className="py-2 bg-gray-50 outline-none  px-4"
+                        className="py-2 bg-gray-50 outline-none  px-4 placeholder:text-[12px]"
                       />
 
                       <button
@@ -213,13 +215,10 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
                     <h1 className="text-[25px] font-bold my-4">
                       Welcome Back 👕!
                     </h1>
-                    <p className="text-[14px] md:text-[15px] text-gray-600">
+                    <p className="text-[14px] md:text-[12px] text-gray-600">
                       We’re thrilled to have you here. Find your style, refresh
                       your wardrobe, and enjoy exclusive deals!
                     </p>
-                    <strong className="mb-5">
-                      ✨ Shop now and redefine your look.
-                    </strong>
                   </div>
                 )}
               </h1>

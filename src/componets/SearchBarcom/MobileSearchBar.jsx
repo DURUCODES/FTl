@@ -40,11 +40,18 @@ const MobileSearchBar = ({ closeSearchHandle, openSearch }) => {
       {openSearch && (
         <div className="bg-black fixed z-10 bg-opacity-10 backdrop-blur-md h-screen top-0 right-0 w-full">
           <div
-            className={`bg-white md:w-[400px] absolute right-0 top-0 h-screen w-[330px] px-3 py-4 transition-transform duration-300 ease-in-out ${
-              showMenu
-                ? "transform translate-x-50"
-                : "transform -translate-x-full"
-            }`}
+            className={`bg-white md:w-[400px] 
+              
+                             absolute mt-4
+               h-[95%]   w-[90%] rounded-md right-2 p-2 
+              
+              
+              
+              px-3 py-4 transition-transform duration-300 ease-in-out ${
+                showMenu
+                  ? "transform translate-x-50"
+                  : "transform -translate-x-full"
+              }`}
           >
             <div className="flex justify-between items-center mb-10">
               <h1 className="text-[18px] font-light">Search</h1>

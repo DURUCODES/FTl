@@ -102,31 +102,36 @@ const CartSide = ({
   return (
     <div className="text-black">
       {openCart && (
-        <div className="bg-black fixed bg-opacity-10 z-10 backdrop-blur-md h-screen top-0 right-0 w-full">
+        <div className="bg-black p-4 fixed bg-opacity-10 z-10 backdrop-blur-md h-screen top-0 right-0 w-full">
           <div
-            className={`bg-white sd:w-[90%] md:w-[full] z-10 absolute right-0 top-0 h-screen  px-3 py-4 transition-transform duration-300 ease-in-out ${
-              showMenu
-                ? "transform translate-x-50"
-                : "transform -translate-x-full"
-            }`}
+            className={`bg-white  z-10 
+              
+               absolute 
+               h-[95%]   w-[90%] md:w-[400px] rounded-md right-2 p-2 
+              
+          transition-transform duration-300 ease-in-out ${
+            showMenu
+              ? "transform translate-x-50"
+              : "transform -translate-x-full"
+          }`}
           >
             <div className="h-full overflow-y-auto">
               {" "}
               {/* Added this div to enable scrolling */}
               {cart.product.length > 0 ? (
-                <div className="bg-white">
-                  <div className="flex justify-between items-center mb-10">
+                <div className="bg-white p-2">
+                  <div className="flex justify-between items-center ">
                     <div>
-                      <h1 className="text-[20px] font-bold font-style:italic">
+                      <h1 className="text-[20px] font-bold font-style:italic ">
                         Shopping Cart
                       </h1>{" "}
-                      <span>Items: {cart.totalQuantity}</span>
                     </div>
                     <RiCloseLargeLine
                       className="md:text-[25px] text-[20px] cursor-pointer"
                       onClick={handleCartClose}
                     />
                   </div>
+                  <p></p>
 
                   <div className="flex flex-col justify-between w-full mt-0">
                     {cart.product.map((product) => (
@@ -151,7 +156,7 @@ const CartSide = ({
                               <p>{product.size}</p>
                               <p>{product.color}</p>
                               <div className=" flex items-center">
-                                <div className=" border-black border px-5 space-x-4 mr-2">
+                                <div className=" border-black border px-2 md:px-5 space-x-4 mr-2">
                                   <button
                                     onClick={() =>
                                       dispatch(decreaseQuantity(product.id))
@@ -265,7 +270,7 @@ const CartSide = ({
                 </div>
               ) : (
                 // EMPTY CART DISPLAY
-                <div className="flex justify-center flex-col py-0">
+                <div className="flex justify-center flex-col p-4">
                   <div className="flex justify-between items-center mb-10">
                     <div>
                       <h1 className="text-[20px] font-bold font-style:italic">

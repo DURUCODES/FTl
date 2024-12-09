@@ -4,9 +4,10 @@ import { addToWishList } from "../../redux/wishListSlice";
 import Select from "react-select";
 import { toast } from "react-toastify";
 import { IoIosClose } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom"; // Import useLocation hook
 import { MdOutlineChevronRight } from "react-icons/md";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+import { GrClose } from "react-icons/gr";
 
 const ModalForDetails = ({ product, onClose }) => {
   const [selectedColor, setSelectedColor] = useState(null);
@@ -14,6 +15,8 @@ const ModalForDetails = ({ product, onClose }) => {
   const [wishlist, setWishlist] = useState(false);
   const [quantity, setQuantity] = useState(1); // Default quantity to 1
   const dispatch = useDispatch();
+
+  const location = useLocation(); // Get the current location
 
   if (!product) return null;
 
@@ -74,40 +77,53 @@ const ModalForDetails = ({ product, onClose }) => {
     }
   };
 
+  // Get the current page from the URL (e.g., "new-arrivals", "category", etc.)
+  const pathParts = location.pathname.split("/").filter(Boolean);
+  const currentPage = pathParts[pathParts.length - 2]; // This gets the second last part of the path (the category/page name)
+
+  // Format the current page name for readability
+  const formattedPageName = currentPage
+    ? currentPage
+        .replace(/-/g, " ")
+        .replace(/\b\w/g, (char) => char.toUpperCase())
+    : "Product"; // Default to "Product" if no category is found
+
   return (
     <div className="fixed inset-0 z-10 flex justify-center items-center bg-black bg-opacity-50">
-      <div className="bg-white w-full md:w-[800px] h-full md:h-[600px] overflow-y-auto p-2 rounded-md  z-10 fixed">
-        <div className="breadcrumbs text-sm px-4">
-          <ul className="text-black text-center flex items-center">
-            <Link to="/">
-              <li className="flex items-center">
-                Home{" "}
+      <div className="bg-white w-full md:w-[800px] h-full md:h-[600px] overflow-y-auto p-2 rounded-md p-4 z-10 fixed">
+        <div className="flex items-center justify-between mb-4">
+          <div className="breadcrumbs text-sm">
+            <ul className="text-black text-center flex items-center">
+              {/* Breadcrumbs displaying the current page and the product name */}
+              <li className="cursor-pointer flex items-center">
+                {formattedPageName} {/* Display the current page */}
                 <span>
                   <MdOutlineChevronRight />
                 </span>
               </li>
-            </Link>
-            <li className="cursor-pointer flex items-center">{product.name}</li>
-          </ul>
+              <li className="cursor-pointer flex items-center">
+                {product.name}
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <button onClick={onClose} className="text-[20px] text-gray-700">
+              <GrClose />
+            </button>
+          </div>
         </div>
 
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-2xl text-gray-700"
-        >
-          <IoIosClose />
-        </button>
-        <div className="flex flex-col md:flex-row md:p-4 gap-8">
-          <div className="md:w-1/2 flex justify-center items-center ">
+        <div className="flex flex-col md:flex-row gap-8">
+          <div className="md:w-1/2 flex justify-center items-center">
             <img
               src={product.image} // Use the first image or add logic to select different images
               alt={product.name}
-              className="object-cover w-full h-[400px] "
+              className="object-cover w-full h-[]"
             />
           </div>
           <div className="w-full md:w-1/2 text-black">
             <div className="border-b-2 p2-4 md:py-2 ">
-              {" "}
               <h2 className="text-[34px] font-semibold">{product.name}</h2>
             </div>
             <p className="mt-2 text-[14px]">{product.description}</p>
@@ -146,35 +162,35 @@ const ModalForDetails = ({ product, onClose }) => {
             </div>
 
             {/* Quantity Selector */}
-            <div className="mt-4 flex flex-col  gap-4">
+            <div className="mt-4 flex flex-col gap-4">
               <span className="font-bold">Quantity:</span>
               <div className="space-x-2">
                 <button
                   onClick={handleDecrement}
-                  className="px-2 py-1 border border-black "
+                  className="px-2 py-1 border border-black"
                 >
                   -
                 </button>
                 <span>{quantity}</span>
                 <button
                   onClick={handleIncrement}
-                  className="px-2 py-1 border border-black "
+                  className="px-2 py-1 border border-black"
                 >
                   +
                 </button>
               </div>
             </div>
 
-            <div className="flex  flex-col-reverse   my-4  gap-4 mt-6">
-              <div className="flex  flex-col w-full space-y-2">
+            <div className="flex flex-col-reverse my-4 gap-4 mt-6">
+              <div className="flex flex-col w-full space-y-2">
                 <button
                   onClick={handleAddToCart}
-                  className=" bg-white border-black border-[1.5px] text-black h-[40px] rounded "
+                  className="bg-white border-black border-[1.5px] text-black h-[40px] rounded"
                 >
                   Add to Cart
                 </button>
 
-                <button className=" bg-black hover:bg-white hover:text-black border-[1.5px] border-black  h-[40px] rounded text-white">
+                <button className="bg-black hover:bg-white hover:text-black border-[1.5px] border-black h-[40px] rounded text-white">
                   Buy Now
                 </button>
               </div>

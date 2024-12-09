@@ -3,6 +3,7 @@
 @tailwind utilities;
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Parkinsans:wght@300..800&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 
+@import url("https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap");
 @keyframes rotate {
   from {
     transform: rotate(0deg);
@@ -28,7 +29,11 @@
 }
 
 body {
-  font-family: "Parkinsans", sans-serif;
+  font-family: "Karla", sans-serif;
   font-optical-sizing: auto;
-  font-style: normal;
 }
+
+/* ul {
+  font-family: "Karla", sans-serif;
+  font-optical-sizing: auto;
+} */
