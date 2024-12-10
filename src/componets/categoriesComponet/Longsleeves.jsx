@@ -1,39 +1,38 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { CiHeart } from "react-icons/ci";
-import { AiOutlinePlus } from "react-icons/ai";
 import { motion } from "framer-motion";
 import ModalForDetails from "../Modal/ModalForDetails";
+import "react-toastify/dist/ReactToastify.css";
+import { RingLoader } from "react-spinners";
+
 const Longsleeves = () => {
   const [categoryProducts, setCategoryProducts] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility state
-  const [selectedProduct, setSelectedProduct] = useState(null); // Store the selected product for modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [loading, setLoading] = useState(true); // Loading state
 
   useEffect(() => {
     const fetchCategoryProducts = async () => {
       try {
-        // Category ID 8 is fixed for Black Friday
-        const categoryId = 8;
+        const categoryId = 13;
         const response = await axios.get(
           "https://ftl-server.onrender.com/api/products"
         );
-
-        // Filter products by categoryId === 8
         const filteredProducts = response.data.data.filter(
           (product) => product.categoryId === categoryId
         );
 
         setCategoryProducts(filteredProducts);
+        setLoading(false); // Set loading to false when data is fetched
       } catch (error) {
         console.error("Error fetching products for category:", error);
+        setLoading(false); // Set loading to false even if there is an error
       }
     };
 
     fetchCategoryProducts();
-  }, []); // Empty dependency array means this runs once on component mount
+  }, []);
 
   const handleShowModal = (product) => {
     setSelectedProduct(product); // Set the selected product for modal
@@ -44,12 +43,17 @@ const Longsleeves = () => {
     setIsModalOpen(false); // Close the modal
     setSelectedProduct(null); // Clear selected product
   };
+
   return (
-    <div>
-      {" "}
-      <div>
+    <div className="py-4">
+      {/* Display spinner while loading */}
+      {loading ? (
+        <div className="flex justify-center items-center h-[400px]">
+          <RingLoader size={80} color={"black"} loading={loading} />
+        </div>
+      ) : (
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-6"
+          className="grid grid-cols-2 md:grid-cols-4"
           initial={{ opacity: 0, x: -10 }}
           whileInView={{
             opacity: 1,
@@ -72,7 +76,7 @@ const Longsleeves = () => {
                       className="w-full h-full object-contain mx-auto rounded-md"
                       alt={product.name}
                     />
-                    <div className="absolute top-0 left-0 bg-green-500 text-white inline-block px-2 py-1 rounded">
+                    <div className="absolute top-0 left-0 bg-green-500 text-white inline-block px-2 py-1 ">
                       <p className="text-[14px]">On Sale</p>
                     </div>
                   </div>
@@ -96,7 +100,7 @@ const Longsleeves = () => {
               </div>
             ))
           ) : (
-            <p>No products available in this category.</p>
+            <p>No products found</p>
           )}
 
           {/* Modal for Details */}
@@ -109,7 +113,7 @@ const Longsleeves = () => {
 
           <ToastContainer />
         </motion.div>
-      </div>
+      )}
     </div>
   );
 };

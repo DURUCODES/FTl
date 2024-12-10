@@ -20,7 +20,7 @@ const UserProfile = () => {
   return (
     <div>
       <div className="my-4 max-w-sm overflow-hidden text-black ">
-        <div className="rounded-lg border bg-white px-4 pt-8 pb-10 shadow-lg">
+        <div className="rounded-lg  bg-white px-4 pt-8 border-b shadow-lg">
           {/* Profile Picture */}
           <div className="relative mx-auto w-[100px] h-[100px] rounded-full text-center bg-black flex items-center justify-center">
             {/* Large Initial */}

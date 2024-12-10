@@ -6,7 +6,7 @@ import ModalForDetails from "../Modal/ModalForDetails";
 import "react-toastify/dist/ReactToastify.css";
 import { RingLoader } from "react-spinners";
 
-const Hat = () => {
+const Tracksuit = () => {
   const [categoryProducts, setCategoryProducts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -15,7 +15,7 @@ const Hat = () => {
   useEffect(() => {
     const fetchCategoryProducts = async () => {
       try {
-        const categoryId = 11;
+        const categoryId = 9;
         const response = await axios.get(
           "https://ftl-server.onrender.com/api/products"
         );
@@ -43,7 +43,6 @@ const Hat = () => {
     setIsModalOpen(false); // Close the modal
     setSelectedProduct(null); // Clear selected product
   };
-
   return (
     <div className="py-4">
       {/* Display spinner while loading */}
@@ -118,4 +117,4 @@ const Hat = () => {
   );
 };
 
-export default Hat;
+export default Tracksuit;

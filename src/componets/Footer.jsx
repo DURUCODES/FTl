@@ -9,9 +9,9 @@ import { FaWhatsapp } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <div className="bg-white pt-5 pb-2  md:px-4 overflow-hidden border-black border-[1px]">
-      <div className="bg-white text-black flex flex-col">
-        <div className="flex flex-col md:flex-row px-0 md:px-[30px] justify-between mb-5 border-b-[1px] border-black text-black">
+    <div className="bg-black pt-5 pb-2 md:px-4 overflow-hidden border-black border-[1px]">
+      <div className="bg-black text-white flex flex-col">
+        <div className="flex flex-col md:flex-row px-0 md:px-[30px] justify-between mb-5 border-b-[1px] border-black text-white">
           {/* Contact Section */}
           <motion.div
             className="p-4 flex flex-col md:w-[25%] w-full md:border-r-[1px] border-black md:border-b-0 border-b-2 overflow-hidden"
@@ -36,7 +36,7 @@ const Footer = () => {
               Contact
             </motion.h4>
             <motion.p
-              className="mb-2 text-[14px] text-gray-700 underline"
+              className="mb-2 text-[14px] underline"
               initial={{ opacity: 0, x: 100 }}
               whileInView={{
                 opacity: 1,
@@ -53,7 +53,7 @@ const Footer = () => {
               Ago Palace, Tinubu, Lagos, Startime Estate, Isolo
             </motion.p>
             <motion.p
-              className="mb-2 text-[14px] text-gray-700 hover:underline"
+              className="mb-2 text-[14px] hover:underline"
               initial={{ opacity: 0, x: 100 }}
               whileInView={{
                 opacity: 1,
@@ -70,7 +70,7 @@ const Footer = () => {
               Operating hours: Monday – Saturday (10am - 10pm)
             </motion.p>
             <motion.p
-              className="mb-2 text-[14px] text-gray-700 hover:underline"
+              className="mb-2 text-[14px] hover:underline"
               initial={{ opacity: 0, x: 100 }}
               whileInView={{
                 opacity: 1,
@@ -87,7 +87,7 @@ const Footer = () => {
               Sunday (12pm - 10pm)
             </motion.p>
             <motion.p
-              className="mb-2 text-[14px] text-gray-700 hover:underline"
+              className="mb-2 text-[14px] hover:underline"
               initial={{ opacity: 0, x: 100 }}
               whileInView={{
                 opacity: 1,
@@ -142,19 +142,19 @@ const Footer = () => {
               }}
               viewport={{ once: true }}
             >
-              <motion.li className="mb-2 text-[14px] text-gray-700 hover:underline">
+              <motion.li className="mb-2 text-[14px] hover:underline">
                 All Items
               </motion.li>
-              <motion.li className="mb-2 text-[14px] text-gray-700 hover:underline">
+              <motion.li className="mb-2 text-[14px] hover:underline">
                 Men
               </motion.li>
-              <motion.li className="mb-2 text-[14px] text-gray-700 hover:underline">
+              <motion.li className="mb-2 text-[14px] hover:underline">
                 Women
               </motion.li>
-              <motion.li className="mb-2 text-[14px] text-gray-700 hover:underline">
+              <motion.li className="mb-2 text-[14px] hover:underline">
                 Collections
               </motion.li>
-              <motion.li className="mb-2 text-[14px] text-gray-700 hover:underline">
+              <motion.li className="mb-2 text-[14px] hover:underline">
                 Accessories
               </motion.li>
             </motion.ul>
@@ -247,16 +247,16 @@ const Footer = () => {
               <motion.input
                 type="text"
                 placeholder="Name"
-                className="border-b-[1px] border-black py-2 mb-4 focus:outline-none bg-transparent text-black"
+                className="border-b-[1px] border-black py-2 mb-4 focus:outline-none bg-transparent text-white"
               />
               <motion.input
                 type="email"
                 placeholder="Email Address"
-                className="border-b-[1px] border-black py-2 mb-4 focus:outline-none bg-transparent text-black"
+                className="border-b-[1px] border-black py-2 mb-4 focus:outline-none bg-transparent text-white"
               />
               <motion.button
                 type="submit"
-                className="bg-black text-white py-2 px-4 mt-2"
+                className="bg-white text-black py-2 px-4 mt-2"
               >
                 Subscribe
               </motion.button>
@@ -266,7 +266,7 @@ const Footer = () => {
 
         {/* Paystack Image Section */}
         <motion.div
-          className="w-full flex my-4"
+          className="w-full flex my-4 px-2"
           initial={{ opacity: 0, x: 100 }}
           whileInView={{
             opacity: 1,
@@ -275,10 +275,10 @@ const Footer = () => {
           }}
           viewport={{ once: true }}
         >
-          <img src={paystackImg} alt="Paystack Logo" className="h-12" />
+          {/*    <img src={paystackImg} alt="Paystack Logo" className="h-12" /> */}
         </motion.div>
 
-        <div className=" py-4 text-gray-700 text-sm">
+        <div className="p-4 text-white text-sm border-t-[1px] border-black">
           &copy; 2024 Your Company. All Rights Reserved.
         </div>
       </div>

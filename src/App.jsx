@@ -12,13 +12,14 @@ import AllProduct from "./pages/AllProduct/AllProduct";
 import Whatsapp from "./componets/Whatsapp/Whatsapp";
 import OrderComfirmationPage from "./pages/orderComfirmationPage/OrderComfirmationPage";
 import Scroll from "./componets/Scroll/scroll";
-import Categories from "./componets/categoriesComponet/Categories";
 import BlackFriday from "./componets/categoriesComponet/BlackFriday";
 import TopSales from "./componets/categoriesComponet/TopSales";
 import Longsleeves from "./componets/categoriesComponet/Longsleeves";
 import Hat from "./componets/categoriesComponet/Hat";
 import Tees from "./componets/categoriesComponet/Tees";
 import CheckoutPage from "./pages/CheckoutPage/CheckOutPage";
+import Socks from "./componets/categoriesComponet/Socks";
+import Tracksuit from "./componets/categoriesComponet/Tracksuit";
 
 function App() {
   const [order, setOrder] = useState(null);
@@ -42,12 +43,14 @@ function App() {
             path="/order-confirmation"
             element={<OrderComfirmationPage />}
           />
-          <Route path="/collections/:categoryName" element={<Categories />} />
+
           <Route path="/collections/top-sales" element={<TopSales />} />
           <Route path="/collections/black-friday" element={<BlackFriday />} />
           <Route path="/collections/long-sleeve" element={<Longsleeves />} />
           <Route path="/collections/T-shirt" element={<Tees />} />
           <Route path="/collections/hat" element={<Hat />} />
+          <Route path="/track-suit" element={<Tracksuit />} />
+          <Route path="/collection/socks" element={<Socks />} />
         </Routes>
         <ToastContainer />
         <Footer />

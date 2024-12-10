@@ -77,9 +77,9 @@ const ModalForDetails = ({ product, onClose }) => {
     }
   };
 
-  // Get the current page from the URL (e.g., "new-arrivals", "category", etc.)
+  // Get the current page from the URL (e.g., "search", "category", etc.)
   const pathParts = location.pathname.split("/").filter(Boolean);
-  const currentPage = pathParts[pathParts.length - 2]; // This gets the second last part of the path (the category/page name)
+  const currentPage = pathParts[0]; // This gets the first part of the path (e.g., "search")
 
   // Format the current page name for readability
   const formattedPageName = currentPage

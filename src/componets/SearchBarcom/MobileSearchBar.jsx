@@ -54,7 +54,7 @@ const MobileSearchBar = ({ closeSearchHandle, openSearch }) => {
               }`}
           >
             <div className="flex justify-between items-center mb-10">
-              <h1 className="text-[18px] font-light">Search</h1>
+              <h1 className="text-[18px]">Search</h1>
               <RiCloseLargeLine
                 className="md:text-[25px] text-[20px] cursor-pointer"
                 onClick={closeSearchHandle}
@@ -81,7 +81,6 @@ const MobileSearchBar = ({ closeSearchHandle, openSearch }) => {
                     </li>
                   ))}
                 </ul>
-                <FilterDataPage />
               </div>
             )}
           </div>

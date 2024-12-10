@@ -3,9 +3,6 @@ import { useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { addToCart } from "../redux/CartSlice";
-import { CiHeart } from "react-icons/ci";
-import { AiOutlinePlus } from "react-icons/ai";
-import { addToWishList } from "../redux/wishListSlice";
 import { motion } from "framer-motion";
 import ModalForDetails from "../componets/Modal/ModalForDetails";
 
@@ -54,7 +51,7 @@ const ProductPage = ({ product, images }) => {
                 src={product.image}
                 className="w-full h-full object-contain"
               />
-              <div className="absolute top-4 left-0 md:top-0 md:left-10 bg-green-500 text-white inline-block px-2 py-1 ">
+              <div className="absolute top-6 left-0 md:top-0 md:left-10 bg-green-500 text-white inline-block px-2 py-1 ">
                 <p className="text-[14px]">On Sale</p>
               </div>
             </div>

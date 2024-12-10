@@ -1,31 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { RiCloseLargeLine } from "react-icons/ri";
-import { Link } from "react-router-dom";
-import logo from "./ftlLogo.jpg";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaAngleRight } from "react-icons/fa6";
 import { MdOutlinePhoneIphone } from "react-icons/md";
 import { PiInstagramLogoThin } from "react-icons/pi";
 import { CiAt } from "react-icons/ci";
 import { CiFacebook } from "react-icons/ci";
+import { RingLoader } from "react-spinners";
 
-const categoryMapping = {
-  "top-sales": 1,
-  "t-shirt": 3,
-  "long-sleeve": 2,
-  "ftl-hat": 6,
-  "black-friday": 5,
-};
+// Categories with the path to route to
+const Categories = [
+  { name: "T-shirt", path: "/collections/T-shirt" },
+  { name: "Tracksuit", path: "/track-suit" },
+  { name: "Long Sleeve", path: "/collections/long-sleeve" },
+  { name: "Socks", path: "/collection/socks" },
+  { name: "Hat", path: "/collections/hat" },
+];
 
-const MobileNavBar = ({ closeMenuHandle, isOpen, setSelectedCategory }) => {
+const MobileNavBar = ({ closeMenuHandle, isOpen }) => {
   const [showMenu, setShowMenu] = useState(false);
-
-  const categories = [
-    { id: 1, name: "Top Sales" },
-    { id: 3, name: "T-Shirt" },
-    { id: 2, name: "Long Sleeve" },
-    { id: 6, name: "Hat" },
-    { id: 5, name: "Black friday" },
-  ];
+  const [loading, setLoading] = useState(false); // Loading state for spinner
+  const [selectedCategory, setSelectedCategory] = useState(null); // Track selected category
+  const navigate = useNavigate();
+  const location = useLocation(); // Track current route location
 
   // Handle side menu visibility
   useEffect(() => {
@@ -38,12 +35,17 @@ const MobileNavBar = ({ closeMenuHandle, isOpen, setSelectedCategory }) => {
     }
   }, [isOpen]);
 
-  const handleLinkClick = (categoryName) => {
-    // Match category name to the ID using the formatted string
-    const categoryId =
-      categoryMapping[categoryName.toLowerCase().replace(/\s+/g, "-")];
-    setSelectedCategory(categoryId); // Update selected category
-    closeMenuHandle(); // Close menu after clicking a category
+  useEffect(() => {
+    if (loading) {
+      // Simulate loading delay when route is changing
+      const timer = setTimeout(() => setLoading(false), 1000); // Adjust this time to simulate loading
+      return () => clearTimeout(timer);
+    }
+  }, [location]); // Listen to route changes
+
+  const handleCategoryClick = (path) => {
+    setLoading(true); // Start loading when a category is clicked
+    navigate(path); // Navigate to the category's path
   };
 
   return (
@@ -53,37 +55,49 @@ const MobileNavBar = ({ closeMenuHandle, isOpen, setSelectedCategory }) => {
           <div
             className={`bg-white md:w-[400px] 
               absolute 
-               h-[95%]   w-[90%] rounded-md px-3 py-4 my-4 transition-transform duration-300 ease-in-out ${
+               h-[95%] w-[90%] rounded-md px-3 py-4 my-4 transition-transform duration-300 ease-in-out ${
                  showMenu
                    ? "transform translate-x-0"
                    : "transform -translate-x-full"
                }`}
           >
-            <div className="flex flex-row w-full  p-2 justify-between items-center ">
+            <div className="flex flex-row w-full p-2 justify-between items-center">
               <h1>FEEL THE LIFESTYLE</h1>
               <RiCloseLargeLine
-                className="md:text-[25px]  text-[20px] cursor-pointer"
+                className="md:text-[25px] text-[20px] cursor-pointer"
                 onClick={closeMenuHandle}
               />
             </div>
-            <div className="flex justify-between items-center mt-4 flex-col p-2 ">
+            <div className="flex justify-between items-center mt-4 flex-col p-2">
               <ul className="w-full space-y-2 font-light text-[15px] cursor-pointer">
-                {categories.map((category) => (
+                {Categories.map((category, index) => (
                   <li
-                    key={category.id}
-                    className="flex items-center space-x-4 justify-between font-medium text-[14px]"
+                    key={index}
+                    className="flex items-center justify-between font-medium text-[14px] cursor-pointer"
                   >
-                    <Link
-                      to={`/collections/${category.name
-                        .toLowerCase()
-                        .replace(/\s+/g, "-")}`}
-                      onClick={() => handleLinkClick(category.name)}
-                    >
-                      <span>{category.name}</span>
-                    </Link>{" "}
-                    <span>
-                      <FaAngleRight />
-                    </span>
+                    {/* Show Spinner when loading */}
+                    {loading && selectedCategory === category.name ? (
+                      <div className="flex items-center justify-between w-full">
+                        <span>{category.name}</span>
+                        <RingLoader
+                          size={20}
+                          color={"#36D7B7"}
+                          loading={loading}
+                        />
+                      </div>
+                    ) : (
+                      <div
+                        className="flex items-center justify-between w-full"
+                        onClick={() => {
+                          setSelectedCategory(category.name);
+                          handleCategoryClick(category.path); // Navigate and trigger loading spinner
+                          closeMenuHandle();
+                        }}
+                      >
+                        <span>{category.name}</span>
+                        <FaAngleRight />
+                      </div>
+                    )}
                   </li>
                 ))}
               </ul>
