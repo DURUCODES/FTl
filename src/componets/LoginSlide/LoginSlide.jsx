@@ -8,16 +8,17 @@ import api from "../../libs/axiosInstance";
 
 const LoginSlide = ({ handleLoginClose, openLogin }) => {
   const [showMenu, setShowMenu] = useState(false);
-  const [isSignup, setIsSignup] = useState(false); // Track whether we're in signup or login
+  const [isSignup, setIsSignup] = useState(false);
   const [userDetails, setUserDetails] = useState({
     email: "",
     password: "",
     fullName: "",
   });
-  const [loading, setLoading] = useState(false); // Add loading state
-  const [isSubmitting, setIsSubmitting] = useState(false); // Track if the form is submitting
-  const [dotAnimation, setDotAnimation] = useState(""); // Manage the dot animation
-  const { login, logout, isAuthenticated } = useAuth(); // Get login function from context
+  const [loading, setLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [dotAnimation, setDotAnimation] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // State to hold error message
+  const { login, logout, isAuthenticated } = useAuth();
 
   useEffect(() => {
     if (openLogin) {
@@ -39,52 +40,56 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
 
   // LOGIN FUNCTION
   const loginUser = (email, password) => {
-    setIsSubmitting(true); // Start submitting
-    setLoading(true); // Show loading animation
+    setIsSubmitting(true);
+    setLoading(true);
+    setErrorMessage(""); // Reset error message before each login attempt
 
     api
       .post("/auth/login", { email, password }, { withCredentials: true })
       .then((response) => {
-        const token = response?.data?.token; // Extract token from response
-        const userData = response?.data?.user; // Extract user data from response
-        login(token, userData); // Save token and user data in context
+        const token = response?.data?.token;
+        const userData = response?.data?.user;
+        login(token, userData);
         setTimeout(() => {
-          handleLoginClose(); // Close login after 1 second
-          setDotAnimation(""); // Reset dot animation
+          handleLoginClose();
+          setDotAnimation("");
         }, 1000);
       })
       .catch((error) => {
-        console.error("Login failed", error);
-        setIsSubmitting(false); // Stop submitting
-        setLoading(false); // Stop loading
+        setIsSubmitting(false);
+        setLoading(false);
+        if (error.response?.data?.message) {
+          setErrorMessage(error.response.data.message); // Display error from server
+        } else {
+          setErrorMessage("email or password not correct.");
+        }
       });
   };
 
   // SIGNUP FUNCTION
   const signupUser = (email, password, fullName) => {
-    setIsSubmitting(true); // Start submitting
-    setLoading(true); // Show loading animation
+    setIsSubmitting(true);
+    setLoading(true);
+    setErrorMessage(""); // Reset error message before each signup attempt
 
     api
-      .post("/auth/register", {
-        email,
-        password,
-        fullName,
-      })
+      .post("/auth/register", { email, password, fullName })
       .then((response) => {
-        const userData = { email, fullName }; // Add more user data as needed
-        // Store the details in context and then switch to login
         setTimeout(() => {
-          setIsSignup(false); // Switch to login page after 3 seconds
-          setIsSubmitting(false); // Stop submitting
-          setLoading(false); // Stop loading
-          setDotAnimation(""); // Reset dot animation
+          setIsSignup(false);
+          setIsSubmitting(false);
+          setLoading(false);
+          setDotAnimation("");
         }, 3000);
       })
       .catch((error) => {
-        console.error("Signup failed", error);
-        setIsSubmitting(false); // Stop submitting
-        setLoading(false); // Stop loading
+        setIsSubmitting(false);
+        setLoading(false);
+        if (error.response?.data?.message) {
+          setErrorMessage(error.response.data.message); // Display error from server
+        } else {
+          setErrorMessage("User with same email already exist.");
+        }
       });
   };
 
@@ -92,7 +97,6 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
     e.preventDefault();
     const { email, password, fullName } = e.target;
 
-    // Save the user details and toggle to login view
     setUserDetails({
       email: email.value,
       password: password.value,
@@ -118,9 +122,9 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
           }
           return prev + ".";
         });
-      }, 500); // Change the dot animation every 500ms
+      }, 500);
     }
-    return () => clearInterval(interval); // Clear the interval when loading is false
+    return () => clearInterval(interval);
   }, [loading]);
 
   return (
@@ -131,12 +135,11 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
             className={`bg-white md:w-[400px] z-10 
                absolute 
                h-[95%]   w-[90%] rounded-md px-3 py-4 my-4
-              
-                transition-transform duration-300 ease-in-out ${
-                  showMenu
-                    ? "transform translate-x-0"
-                    : "transform -translate-x-full"
-                }`}
+              transition-transform duration-300 ease-in-out ${
+                showMenu
+                  ? "transform translate-x-0"
+                  : "transform -translate-x-full"
+              }`}
           >
             <div className="flex justify-between items-center">
               <h1 className="text-[20px] font-bold">
@@ -152,7 +155,7 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
                       </h1>
                       <p className="text-[14px] md:text-[15px] text-gray-600 text-center">
                         Join FTL and step into a world of style! 🛍️ Sign up now
-                        ✨"
+                        ✨
                       </p>
                     </div>
 
@@ -168,9 +171,9 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
                         placeholder="Name"
                         type="text"
                         required
-                        value={userDetails.fullName} // Bind input to fullName in state
+                        value={userDetails.fullName}
                         onChange={handleInputChange}
-                        className="py-2 bg-gray-50 outline-none  px-4 placeholder:text-[12px]"
+                        className="py-2 bg-gray-50 outline-none text-[16px] font-light px-4 placeholder:text-[12px]"
                       />
 
                       <label className="font-bold text-[15px] font-mono my-2">
@@ -181,9 +184,9 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
                         placeholder="Email Address"
                         type="email"
                         required
-                        value={userDetails.email} // Bind input to email in state
+                        value={userDetails.email}
                         onChange={handleInputChange}
-                        className="py-2 bg-gray-50 outline-none  px-4 placeholder:text-[12px]"
+                        className="py-2 bg-gray-50 outline-none text-[16px] font-light px-4 placeholder:text-[12px]"
                       />
 
                       <label className="font-bold text-[15px] font-mono my-2">
@@ -194,19 +197,25 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
                         placeholder="Password"
                         type="password"
                         required
-                        value={userDetails.password} // Bind input to password in state
+                        value={userDetails.password}
                         onChange={handleInputChange}
-                        className="py-2 bg-gray-50 outline-none  px-4 placeholder:text-[12px]"
+                        className="py-2 bg-gray-50 outline-none text-[16px] font-light px-4 placeholder:text-[12px]"
                       />
 
                       <button
                         className="bg-black p-2 text-white rounded my-4 cursor-pointer "
                         type="submit"
-                        disabled={loading || isSubmitting} // Disable if loading or submitting
+                        disabled={loading || isSubmitting}
                       >
                         {loading ? <>Signing Up{dotAnimation}</> : "Sign Up"}
                       </button>
                     </form>
+
+                    {/*     {errorMessage && (
+                      <div className="text-red-500 text-center mt-4">
+                        <p> {errorMessage}</p>
+                      </div>
+                    )} */}
                   </div>
                 ) : (
                   /* LOGIN */
@@ -228,9 +237,8 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
               />
             </div>
 
-            {/* Render UserProfile if authenticated, else show login/signup */}
             {isAuthenticated ? (
-              <UserProfile />
+              <UserProfile handleLoginClose={handleLoginClose} />
             ) : (
               <div className="flex flex-col">
                 {!isSignup ? (
@@ -246,7 +254,7 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
                       placeholder="Email Address"
                       type="email"
                       required
-                      value={userDetails.email} // Bind input to email in state
+                      value={userDetails.email}
                       onChange={handleInputChange}
                       className="py-2 bg-gray-50 outline-none px-4"
                     />
@@ -259,25 +267,31 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
                       placeholder="Password"
                       type="password"
                       required
-                      value={userDetails.password} // Bind input to password in state
+                      value={userDetails.password}
                       onChange={handleInputChange}
                       className="py-2 bg-gray-50 outline-none px-4"
                     />
 
-                    <div className=" mt-4 flex flex-col">
+                    <div className="mt-4 flex flex-col">
                       <button
                         className="bg-black p-2 text-white rounded mt-4 mb-2 cursor-pointer"
                         type="submit"
-                        disabled={loading || isSubmitting} // Disable if loading or submitting
+                        disabled={loading || isSubmitting}
                       >
                         {loading ? <>Logging In{dotAnimation}</> : "Login"}
                       </button>
-                      <a className="cursor-pointer text-red-500 hover:underline">
+                      <a className="cursor-pointer text-black underline text-[14px] hover:underline">
                         Forgot Password?
                       </a>
                     </div>
                   </form>
                 ) : null}
+
+                {errorMessage && (
+                  <div className="text-red-500  text-10px mt-0">
+                    <p> {errorMessage}</p>
+                  </div>
+                )}
 
                 <p className="my-4 text-black">
                   {isSignup ? (

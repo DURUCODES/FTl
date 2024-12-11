@@ -20,9 +20,11 @@ import Tees from "./componets/categoriesComponet/Tees";
 import CheckoutPage from "./pages/CheckoutPage/CheckOutPage";
 import Socks from "./componets/categoriesComponet/Socks";
 import Tracksuit from "./componets/categoriesComponet/Tracksuit";
+import OrderHistory from "./pages/OrderHistory/OrderHistory";
 
 function App() {
   const [order, setOrder] = useState(null);
+  const [showProfile, setShowProfile] = useState(true);
   return (
     <div className="conatiner">
       <BrowserRouter>
@@ -43,14 +45,15 @@ function App() {
             path="/order-confirmation"
             element={<OrderComfirmationPage />}
           />
-
           <Route path="/collections/top-sales" element={<TopSales />} />
           <Route path="/collections/black-friday" element={<BlackFriday />} />
           <Route path="/collections/long-sleeve" element={<Longsleeves />} />
           <Route path="/collections/T-shirt" element={<Tees />} />
           <Route path="/collections/hat" element={<Hat />} />
           <Route path="/track-suit" element={<Tracksuit />} />
+
           <Route path="/collection/socks" element={<Socks />} />
+          <Route path="/order-history" element={<OrderHistory />} />
         </Routes>
         <ToastContainer />
         <Footer />

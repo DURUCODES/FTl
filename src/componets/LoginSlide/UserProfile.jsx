@@ -1,59 +1,90 @@
-import React, { useState } from "react";
-import { useAuth } from "../../ContextAuth/ContextAuth";
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../../ContextAuth/ContextAuth"; // Importing context to access user data and token
 import { CiEdit } from "react-icons/ci";
 import { CiLogout } from "react-icons/ci";
-import ModalEdit from "./ModalEdit";
+import { AiOutlineHistory } from "react-icons/ai";
+import { BsSend } from "react-icons/bs";
+import { useNavigate } from "react-router";
 
-const UserProfile = () => {
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+const UserProfile = ({ handleLoginClose }) => {
+  /// handleLoginClose comes from the LoginSlide so not to Forget
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
+  // Handle logout
   const handleLogout = () => {
-    logout();
+    logout(); // Log out the user and clear session data
   };
 
-  const openEditModal = () => {
-    const modal = document.getElementById("my_modal_3"); // Get the modal element
-    modal.showModal(); // Show the modal
+  //Handle to history
+  const historyOpen = () => {
+    navigate("/order-history");
+    handleLoginClose(false);
   };
 
   return (
     <div>
+      {/* Profile Information */}
       <div className="my-4 max-w-sm overflow-hidden text-black ">
-        <div className="rounded-lg  bg-white px-4 pt-8 border-b shadow-lg">
+        <div className="bg-white px-2 pt-2 border-b ">
           {/* Profile Picture */}
-          <div className="relative mx-auto w-[100px] h-[100px] rounded-full text-center bg-black flex items-center justify-center">
-            {/* Large Initial */}
-            <span className="text-white text-[80px] font-bold">
-              {user?.fullName[0]}
+          <div className="relative w-[50px] h-[50px] rounded-full text-center bg-black flex items-center justify-center">
+            <span className="text-white text-[30px] font-bold">
+              {user?.fullName[0]}{" "}
+              {/* Display first letter of user's full name */}
             </span>
           </div>
 
-          {/* User Name */}
-          <h1 className="my-1 text-center text-xl font-bold text-gray-900">
-            {user?.fullName}
+          {/* User Name and Email */}
+          <h1 className="mt-2 text-xl font-bold text-gray-900">
+            {user?.fullName} {/* Display full name */}
           </h1>
-          <h3 className="font-lg text-semibold text-center my-2 text-gray-600">
-            {user?.email}
+          <h3 className="font-lg text-semibold mb-2 text-gray-600">
+            {user?.email} {/* Display user's email */}
           </h3>
+        </div>
+      </div>
 
-          <div className="py-2 flex items-center justify-center space-x-4">
-            <button
-              onClick={openEditModal}
-              className="bg-black hover:bg-gray-800 text-white p-2 rounded flex items-center"
-            >
-              Edit Pro...
+      {/* Action Buttons */}
+      <div>
+        <div className="grid grid-cols-2 gap-4">
+          {/* Edit Profile Button */}
+          <button className="flex flex-col justify-center items-center border-black border-[1px] px-4 w-full bg-transparent text-black rounded py-4 text-center hover:bg-black hover:text-white active:bg-black active:text-white">
+            <span className="text-[25px]">
               <CiEdit />
-            </button>
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 hover:bg-red-800 text-white p-2 rounded flex items-center"
-            >
-              Log Out <CiLogout />
-            </button>
+            </span>
+            <p className="mt-2">Edit Profile</p>
+          </button>
 
-            <ModalEdit />
-          </div>
+          {/* Order History Button */}
+          <button
+            onClick={historyOpen}
+            className="flex flex-col justify-center items-center border-black border-[1px] px-4 w-full bg-transparent text-black rounded py-4 text-center hover:bg-black hover:text-white active:bg-black active:text-white"
+          >
+            <span className="text-[25px]">
+              <AiOutlineHistory />
+            </span>
+            <p className="mt-2">Order History</p>
+          </button>
+
+          {/* Send Message Button */}
+          <button className="flex flex-col justify-center items-center border-black border-[1px] px-4 w-full bg-transparent text-black rounded py-4 text-center hover:bg-black hover:text-white active:bg-black active:text-white">
+            <span className="text-[25px]">
+              <BsSend />
+            </span>
+            <p className="mt-2">Send Message</p>
+          </button>
+
+          {/* Log out Button */}
+          <button
+            onClick={handleLogout}
+            className="flex flex-col justify-center items-center border-black border-[1px] px-4 w-full bg-transparent text-black rounded py-4 text-center hover:bg-black hover:text-white active:bg-black active:text-white"
+          >
+            <span className="text-[25px] text-red-600">
+              <CiLogout />
+            </span>
+            <p className="mt-2">Log out</p>
+          </button>
         </div>
       </div>
     </div>

@@ -279,7 +279,7 @@ const Footer = () => {
         </motion.div>
 
         <div className="p-4 text-white text-sm border-t-[1px] border-black">
-          &copy; 2024 Your Company. All Rights Reserved.
+          &copy; 2024 FTL. All Rights Reserved.
         </div>
       </div>
     </div>

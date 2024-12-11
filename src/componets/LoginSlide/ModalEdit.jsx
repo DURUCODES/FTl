@@ -18,7 +18,7 @@ const ModalEdit = () => {
 
     // Call API to update user information
     axios
-      .put("https://ftl-server.onrender.com/api/auth/update", {
+      .put("https://ftl-server.onrender.com/api//auth/profile", {
         fullName,
         email,
         password,
