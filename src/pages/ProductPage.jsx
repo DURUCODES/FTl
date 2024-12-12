@@ -48,7 +48,7 @@ const ProductPage = ({ product, images }) => {
         <div className="w-full">
           <div className="mx-2 rounded my-4 relative transform transition-transform duration-300">
             {/* Product Image */}
-            <Link to={`/product/${product.id}`}>
+            <Link to={`/collections/${product.id}`}>
               <div className="w-full h-[300px] relative">
                 <img src={product.image} className="w-full h-full object-fit" />
                 {/* "On Sale" Badge */}

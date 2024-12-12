@@ -37,7 +37,7 @@ function App() {
           <Route path="/new-arrivals" element={<NewArrivals />} />
           <Route path="/best-collections" element={<BestCollections />} />
           <Route path="/products" element={<AllProduct />} />
-          <Route path="/product/:id" element={<ProductMainDetails />} />
+          <Route path="/collections/:id" element={<ProductMainDetails />} />
           <Route
             path="/checkout"
             element={<CheckoutPage setOrder={setOrder} />}

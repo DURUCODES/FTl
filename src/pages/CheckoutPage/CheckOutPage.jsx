@@ -12,7 +12,7 @@ import mtn from "../CheckoutPage/images/mtn.svg";
 import ama from "../CheckoutPage/images/atm.png";
 import { CiShoppingCart } from "react-icons/ci";
 import logo from "./ftlmain2.png";
-
+import { FiShoppingBag } from "react-icons/fi";
 const CheckoutPage = () => {
   const location = useLocation(); // Use location hook to get passed state
   const cart = useSelector((state) => state.cart);
@@ -30,7 +30,6 @@ const CheckoutPage = () => {
   const [shippingInfo, setShippingInfo] = useState({
     Firstname: location.state?.shippingInfo?.Firstname || "",
     Lastname: location.state?.shippingInfo?.Lastname || "",
-    email: location.state?.shippingInfo?.email || "",
     address: location.state?.shippingInfo?.address || "",
     company: location.state?.shippingInfo?.company || "",
     apartment: location.state?.shippingInfo?.apartment || "",
@@ -65,7 +64,6 @@ const CheckoutPage = () => {
     if (deliveryMethod === "delivery") {
       if (!shippingInfo.Firstname)
         validationErrors.Firstname = "First name is required";
-      if (!shippingInfo.email) validationErrors.email = "Email is required";
       if (!shippingInfo.Lastname)
         validationErrors.Lastname = "Last name is required";
       if (!shippingInfo.address)
@@ -139,7 +137,7 @@ const CheckoutPage = () => {
 
     paystack.newTransaction({
       key: apiKey, // Use your actual Paystack public key
-      email: shippingInfo.email,
+      email: billingInfo.email,
       amount: calculateTotalPrice() * 100, // Convert to kobo
       currency: "NGN",
       onSuccess: (transaction) => {
@@ -169,36 +167,63 @@ const CheckoutPage = () => {
   return (
     <div className="  text-black ">
       <div className=" ">
-        <div className="flex justify-between py-2 px-10 items-center">
+        <div className="flex justify-between py-2 md:px-10 px-4 items-center">
           <Link to="/">
             {" "}
             <img src={logo} className="w-[200px] h-[100px]" />
           </Link>
-          <h3 className="text-xl font-semibold">CHECKOUT</h3>
+          <span className="flex items-center text-[40px] cursor-pointer">
+            <FiShoppingBag />
+          </span>
         </div>
         <div className="flex flex-col md:flex-row justify-between md:space-x-4 md:border-t-[2px]">
           <div className="md:w-1/2 md:border-r-[2px] md:py-4 py-4 md:px-2  md:px-18 h-[100%]">
             {/* Billing Info Section */}
             {/* BILLING CONTACT  */}
             <div className="p-2 border-black border-[0px]">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold mb-1">Contact</h3>
-              </div>
-
-              <div className="space-y-4">
-                <div>
+              {/* BILLING INFO */}
+              <div className="p-2">
+                <h2 className="text-[16px] font-medium  mb-2">
+                  Billing Information
+                </h2>
+                <div className="billing-info-section space-y-4 ">
+                  <input
+                    type="text"
+                    name="fullName"
+                    value={billingInfo.fullName}
+                    onChange={handleBillingChange}
+                    placeholder="Full Name"
+                    className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
+                  />
+                  {errors.fullName && (
+                    <p className="text-xs text-red-500 mt-2">
+                      {errors.fullName}
+                    </p>
+                  )}
                   <input
                     type="email"
-                    id="email"
                     name="email"
-                    className="p-2 rounded w-full bg-white border-[1px] px-4 text-black placeholder:text-[10px]"
-                    placeholder="Enter your email"
-                    value={shippingInfo.email}
-                    onChange={handleShippingChange}
+                    value={billingInfo.email}
+                    onChange={handleBillingChange}
+                    placeholder="Email"
+                    className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
                   />
-                  {errors.email && (
-                    <p className="text-red-500 text-[10px] mt-2">
-                      {errors.email}
+                  {errors.billingEmail && (
+                    <p className="text-xs text-red-500 mt-2">
+                      {errors.billingEmail}
+                    </p>
+                  )}
+                  <input
+                    type="text"
+                    name="phoneNumber"
+                    value={billingInfo.phoneNumber}
+                    onChange={handleBillingChange}
+                    placeholder="Phone Number"
+                    className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
+                  />
+                  {errors.phoneNumber && (
+                    <p className="text-xs text-red-500 mt-2">
+                      {errors.phoneNumber}
                     </p>
                   )}
                 </div>
@@ -207,7 +232,7 @@ const CheckoutPage = () => {
             {/* Delivery Method Section */}
             <div className="p-2 mb-0">
               <div className="flex items-center justify-between">
-                <h3 className="text-[18px] font-semibold mb-2">Delivery</h3>
+                <h3 className="text-[16px] font-medium mb-2">Delivery</h3>
               </div>
 
               <div className="">
@@ -291,7 +316,8 @@ const CheckoutPage = () => {
 
             {/* Shipping Info Section (Conditional Rendering) */}
             {deliveryMethod === "delivery" && (
-              <div className=" p-2 ">
+              <div className=" p-2 my-4 ">
+                <h1 className="text-[16px] font-medium  mb-2">Shipping info</h1>
                 <div className={`space-y-4`}>
                   <div className=" flex flex-col w-full items-start px-3 py-1 border rounded bg-white border-gray-200 hover:border-black focus:outline-none focus:border-black">
                     <label className="text-gray-500 text-[12px] mb-1">
@@ -472,53 +498,11 @@ const CheckoutPage = () => {
                 </div>
               </div>
             )}
-            {/* BILLING INFO */}
-            <div className="p-2">
-              <div className="billing-info-section space-y-4">
-                <h2 className="text-lg font-semibold ">Billing Information</h2>
-                <input
-                  type="text"
-                  name="fullName"
-                  value={billingInfo.fullName}
-                  onChange={handleBillingChange}
-                  placeholder="Full Name"
-                  className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
-                />
-                {errors.fullName && (
-                  <p className="text-xs text-red-500 mt-2">{errors.fullName}</p>
-                )}
-                <input
-                  type="email"
-                  name="email"
-                  value={billingInfo.email}
-                  onChange={handleBillingChange}
-                  placeholder="Email"
-                  className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
-                />
-                {errors.billingEmail && (
-                  <p className="text-xs text-red-500 mt-2">
-                    {errors.billingEmail}
-                  </p>
-                )}
-                <input
-                  type="text"
-                  name="phoneNumber"
-                  value={billingInfo.phoneNumber}
-                  onChange={handleBillingChange}
-                  placeholder="Phone Number"
-                  className="rounded p-4 border-[0.5px] border-black w-full placeholder:text-[12px] hover:border-black focus:outline-black"
-                />
-                {errors.phoneNumber && (
-                  <p className="text-xs text-red-500 mt-2">
-                    {errors.phoneNumber}
-                  </p>
-                )}
-              </div>
-            </div>
+
             {/* Payment Info Section */}
             <div className=" p-2 mt-6">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold mb-2">Payment </h3>
+                <h3 className="text-[16px] font-medium mb-2">Payment </h3>
               </div>
 
               <div className={`space-y-4`}>
