@@ -53,7 +53,7 @@ const ProductPage = ({ product, images }) => {
                 <img src={product.image} className="w-full h-full object-fit" />
                 {/* "On Sale" Badge */}
                 <div
-                  className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold py-1 px-3 rounded"
+                  className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold py-1 px-3 "
                   style={{ zIndex: 10 }}
                 >
                   On Sale

@@ -55,14 +55,14 @@ const MobileNavBar = ({ closeMenuHandle, isOpen }) => {
           <div
             className={`bg-white md:w-[400px] 
               absolute 
-               h-[95%] w-[90%] rounded-md px-3 py-4 my-4 transition-transform duration-300 ease-in-out ${
+               h-[95%] w-[90%] rounded-md px-3 py-4 my-4 transition-transform  duration-300 ease-in-out ${
                  showMenu
                    ? "transform translate-x-0"
                    : "transform -translate-x-full"
                }`}
           >
             <div className="flex flex-row w-full p-2 justify-between items-center">
-              <h1>FEEL THE LIFESTYLE</h1>
+              <h1>Menu</h1>
               <RiCloseLargeLine
                 className="md:text-[25px] text-[20px] cursor-pointer"
                 onClick={closeMenuHandle}
@@ -102,20 +102,20 @@ const MobileNavBar = ({ closeMenuHandle, isOpen }) => {
                 ))}
               </ul>
             </div>
-            <div className="flex flex-col my-2 font-extralight text-[13px] space-y-2 p-2">
+            <div className="flex flex-col my-2 font-extralight text-[14px] space-y-2 p-2">
               <div>
-                <p className="flex items-center font-extralight">
+                <p className="flex items-center font-extralight mb-2">
                   <span>
                     <MdOutlinePhoneIphone />
                   </span>
-                  : 123456788920
+                  : +2347010725792
                 </p>
 
                 <p className="flex items-center">
                   <span>
                     <CiAt />
                   </span>{" "}
-                  : ftlclothing@gmail.com
+                  : ftljagor32@gmail.com
                 </p>
               </div>
               <div className="flex items-center space-x-2">

@@ -6,8 +6,8 @@ import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { BsPersonCircle } from "react-icons/bs";
 import { CiShoppingCart } from "react-icons/ci";
-import logo from "./ftlLogo.jpg"; // Default logo
-import logo2 from "./ftl2.jpg"; // Logo for scroll position
+import logo from "./ftlmain1.png";
+import logo2 from "./ftlmain2.png";
 
 const DesktopNavBar = ({
   openMenuHandle,
@@ -27,11 +27,13 @@ const DesktopNavBar = ({
     // Change the background color and text color based on scroll position
     if (window.scrollY > 0) {
       setBgColor("bg-black"); // Change to black when scrolled
-      setTextColor("text-white"); // Change text to white
+      setTextColor("text-white");
+      setLogoImage(logo);
+      // Change text to white
     } else {
       setBgColor("bg-transparent"); // Change back to transparent when at the top
       setTextColor("text-black"); // Change text back to black
-      setLogoImage(logo); // Change logo back to default when at top
+      setLogoImage(logo2); // Change logo back to default when at top
     }
   };
 
@@ -53,7 +55,7 @@ const DesktopNavBar = ({
         w-[98%] mx-auto ${
           isHomePage ? "fixed top-4" : ""
         }  transform rounded-xl border-white border-[1px] 
-        hover:bg-white hover:text-black text-black ${bgColor} ${textColor}`}
+         hover:text-black text-black ${bgColor} ${textColor}`}
     >
       <div className="flex items-center md:space-x-8">
         <CiMenuFries
@@ -68,11 +70,9 @@ const DesktopNavBar = ({
       </div>
 
       {/* Logo and tagline section */}
-      <div className="text-center">
+      <div className="text-center w-[100px] md:w-[150px] h-[50px]  mt-1 md:mb-4">
         <Link to="/">
-          <h1 className="md:text-[40px] text-[15px] font-semibold">
-            FEEL THE LIFESTYLE
-          </h1>
+          <img src={logoImage} />
         </Link>
       </div>
 

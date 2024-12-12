@@ -11,7 +11,7 @@ import master from "../CheckoutPage/images/master.svg";
 import mtn from "../CheckoutPage/images/mtn.svg";
 import ama from "../CheckoutPage/images/atm.png";
 import { CiShoppingCart } from "react-icons/ci";
-import logo from "../CheckoutPage/images/Flogo.jpg";
+import logo from "./ftlmain2.png";
 
 const CheckoutPage = () => {
   const location = useLocation(); // Use location hook to get passed state
