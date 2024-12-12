@@ -63,7 +63,7 @@ const HomePage = () => {
     switch (activeTab) {
       case "top-sales":
         return (
-          <div className="grid grid-cols-2 md:grid-cols-4">
+          <div className="grid grid-cols-1 md:grid-cols-4">
             {topSales.length > 0 ? (
               topSales.map((item) => (
                 <ProductPage key={item.id} product={item} images={item.image} />
@@ -75,7 +75,7 @@ const HomePage = () => {
         );
       case "new-arrivals":
         return (
-          <div className="grid grid-cols-2 md:grid-cols-4">
+          <div className="grid grid-cols-1 md:grid-cols-4">
             {newArrivalProducts.length > 0 ? (
               newArrivalProducts.map((item) => (
                 <ProductPage key={item.id} product={item} images={item.image} />
@@ -87,7 +87,7 @@ const HomePage = () => {
         );
       case "black-friday":
         return (
-          <div className="grid grid-cols-2 md:grid-cols-4">
+          <div className="grid grid-cols-1 md:grid-cols-4">
             {blackFridayProducts.length > 0 ? (
               blackFridayProducts.map((item) => (
                 <ProductPage key={item.id} product={item} images={item.image} />
@@ -109,11 +109,11 @@ const HomePage = () => {
       </div>
 
       {/* Tabs Section */}
-      <div className="flex items-center justify-between px-2 md:w-[30%] w-[90%] my-8">
+      <div className="flex items-center justify-between px-2 md:w-[30%] w-[90%] my-4">
         <div>
           <a
             onClick={() => handleTabClick("top-sales")}
-            className={`font-light text-[14px] md:text-[16px] text-black cursor-pointer hover:border-b-2 hover:border-black focus:border-b-2 focus:border-black focus:outline-none py-2 ${
+            className={`font-medium text-[14px] md:text-[16px] text-black cursor-pointer hover:border-b-2 hover:border-black focus:border-b-2 focus:border-black focus:outline-none py-2 ${
               activeTab === "top-sales" ? "border-b-2 border-black" : ""
             }`}
           >
@@ -123,7 +123,7 @@ const HomePage = () => {
         <div>
           <a
             onClick={() => handleTabClick("new-arrivals")}
-            className={`font-light text-[14px] md:text-[16px] text-black cursor-pointer hover:border-b-2 hover:border-black focus:border-b-2 focus:border-black focus:outline-none py-2 ${
+            className={`font-medium text-[14px] md:text-[16px] text-black cursor-pointer hover:border-b-2 hover:border-black focus:border-b-2 focus:border-black focus:outline-none py-2 ${
               activeTab === "new-arrivals" ? "border-b-2 border-black" : ""
             }`}
           >
@@ -133,7 +133,7 @@ const HomePage = () => {
         <div>
           <a
             onClick={() => handleTabClick("black-friday")}
-            className={`font-light text-[14px] md:text-[16px] text-black cursor-pointer hover:border-b-2 hover:border-black focus:border-b-2 focus:border-black focus:outline-none p-2 ${
+            className={`font-medium text-[14px] md:text-[16px] text-black cursor-pointer hover:border-b-2 hover:border-black focus:border-b-2 focus:border-black focus:outline-none p-2 ${
               activeTab === "black-friday" ? "border-b-2 border-black" : ""
             }`}
           >

@@ -10,6 +10,7 @@ const ModalEdit = () => {
   const [fullName, setFullName] = useState(user?.fullName || "");
   const [email, setEmail] = useState(user?.email || "");
   const [password, setPassword] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
 
   //// FUNCTION TO UPDATE PROFILE ////
 

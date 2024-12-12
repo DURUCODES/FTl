@@ -71,6 +71,7 @@ const ResposiveNavBar = () => {
         openLogin={openLogin}
         handleLoginOpen={handleLoginOpen}
         handleCartOpen={handleCartOpen}
+        setOpenCart={setOpenCart}
       />
     </div>
   );

@@ -1,22 +1,17 @@
 import { useState } from "react";
 import { addToCart } from "../../redux/CartSlice";
-import { addToWishList } from "../../redux/wishListSlice";
-import Select from "react-select";
-import { toast } from "react-toastify";
-import { IoIosClose } from "react-icons/io";
-import { Link, useLocation } from "react-router-dom"; // Import useLocation hook
-import { MdOutlineChevronRight } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { GrClose } from "react-icons/gr";
+import Select from "react-select";
+import { ClipLoader } from "react-spinners"; // Assuming you're using react-spinners for the loading spinner
 
-const ModalForDetails = ({ product, onClose }) => {
+const ModalForDetails = ({ product, onClose, setOpenCart }) => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
-  const [wishlist, setWishlist] = useState(false);
   const [quantity, setQuantity] = useState(1); // Default quantity to 1
+  const [showAlert, setShowAlert] = useState(false); // State to manage alert visibility
+  const [isLoading, setIsLoading] = useState(false); // Loading state
   const dispatch = useDispatch();
-
-  const location = useLocation(); // Get the current location
 
   if (!product) return null;
 
@@ -35,16 +30,25 @@ const ModalForDetails = ({ product, onClose }) => {
     { value: "XXL", label: "XXL" },
   ];
 
-  const handleAddToCart = (e) => {
+  const openCartFunction = () => {
+    setOpenCart(true);
+  };
+  const handleAddToCart = async (e) => {
     e.stopPropagation();
     e.preventDefault();
+
+    // Check if both color and size are selected
     if (!selectedColor || !selectedSize) {
-      toast.error(
-        "Please select both a color and a size before adding to the cart."
-      );
+      alert("Please select both a color and a size before adding to the cart.");
       return;
     }
 
+    setIsLoading(true); // Set loading state to true when starting the add to cart action
+
+    // Simulate a network delay or async action (for example purposes)
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate 1 second loading
+
+    // Create product object with selected options and quantity
     const productWithOptions = {
       ...product,
       selectedColor: selectedColor.value,
@@ -52,19 +56,13 @@ const ModalForDetails = ({ product, onClose }) => {
       quantity: quantity,
     };
 
+    // Dispatch action to add product to cart
     dispatch(addToCart(productWithOptions));
-    toast.success("Added to cart");
-  };
 
-  const handleAddToWishList = () => {
-    if (!wishlist) {
-      dispatch(addToWishList(product));
-      setWishlist(true);
-      toast.success("Added to wishlist");
-    } else {
-      setWishlist(false);
-      toast.error("Removed from wishlist");
-    }
+    setIsLoading(false); // Set loading state to false after the product is added to cart
+
+    onClose();
+    openCartFunction();
   };
 
   const handleIncrement = () => {
@@ -77,37 +75,11 @@ const ModalForDetails = ({ product, onClose }) => {
     }
   };
 
-  // Get the current page from the URL (e.g., "search", "category", etc.)
-  const pathParts = location.pathname.split("/").filter(Boolean);
-  const currentPage = pathParts[0]; // This gets the first part of the path (e.g., "search")
-
-  // Format the current page name for readability
-  const formattedPageName = currentPage
-    ? currentPage
-        .replace(/-/g, " ")
-        .replace(/\b\w/g, (char) => char.toUpperCase())
-    : "Product"; // Default to "Product" if no category is found
-
   return (
     <div className="fixed inset-0 z-10 flex justify-center items-center bg-black bg-opacity-50">
-      <div className="bg-white w-full md:w-[800px] h-full md:h-[600px] overflow-y-auto p-2 rounded-md p-4 z-10 fixed">
+      <div className="bg-white w-full md:w-[800px] h-full md:h-[600px] overflow-y-auto  rounded-md p-4 z-10 fixed">
         <div className="flex items-center justify-between mb-4">
-          <div className="breadcrumbs text-sm">
-            <ul className="text-black text-center flex items-center">
-              {/* Breadcrumbs displaying the current page and the product name */}
-              <li className="cursor-pointer flex items-center">
-                {formattedPageName} {/* Display the current page */}
-                <span>
-                  <MdOutlineChevronRight />
-                </span>
-              </li>
-              <li className="cursor-pointer flex items-center">
-                {product.name}
-              </li>
-            </ul>
-          </div>
-
-          <div>
+          <div className="float-right">
             <button onClick={onClose} className="text-[20px] text-gray-700">
               <GrClose />
             </button>
@@ -117,14 +89,14 @@ const ModalForDetails = ({ product, onClose }) => {
         <div className="flex flex-col md:flex-row gap-8">
           <div className="md:w-1/2 flex justify-center items-center">
             <img
-              src={product.image} // Use the first image or add logic to select different images
+              src={product.image}
               alt={product.name}
-              className="object-cover w-full h-[]"
+              className="w-full h-[400px] object-contain"
             />
           </div>
           <div className="w-full md:w-1/2 text-black">
             <div className="border-b-2 p2-4 md:py-2 ">
-              <h2 className="text-[34px] font-semibold">{product.name}</h2>
+              <h2 className="text-[24px] font-semibold">{product.name}</h2>
             </div>
             <p className="mt-2 text-[14px]">{product.description}</p>
             <Select
@@ -185,22 +157,18 @@ const ModalForDetails = ({ product, onClose }) => {
               <div className="flex flex-col w-full space-y-2">
                 <button
                   onClick={handleAddToCart}
-                  className="bg-white border-black border-[1.5px] text-black h-[40px] rounded"
+                  className="bg-white border-black border-[1.5px] text-black h-[40px] rounded flex justify-center items-center"
+                  disabled={isLoading} // Disable the button when loading
                 >
-                  Add to Cart
+                  {isLoading ? (
+                    <ClipLoader color="black" size={20} /> // Show spinner
+                  ) : (
+                    "Add to Cart"
+                  )}
                 </button>
 
                 <button className="bg-black hover:bg-white hover:text-black border-[1.5px] border-black h-[40px] rounded text-white">
                   Buy Now
-                </button>
-              </div>
-
-              <div>
-                <button
-                  onClick={handleAddToWishList}
-                  className="px-4 text-[10px] rounded py-2 bg-gray-200"
-                >
-                  {wishlist ? "Remove from Wishlist" : "Add to Wishlist"}
                 </button>
               </div>
             </div>

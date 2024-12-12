@@ -91,9 +91,9 @@ const OrderHistory = () => {
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold text-gray-900">Order History</h2>
-      <div className="order-history mt-1 flex flex-col md:flex-row">
+    <div className="px-2 py-4">
+      <h2 className="text-xl font-bold text-gray-900 "> History</h2>
+      <div className=" mt-1 flex flex-col md:flex-row">
         {loading ? (
           <div className="flex justify-center items-center w-full">
             <RingLoader color="#000000" size={60} />
@@ -127,48 +127,98 @@ const OrderHistory = () => {
             {/* Render Order Details */}
             <div className="mt-4 flex w-full">
               <div className="overflow-x-auto w-full">
-                <table className="table-auto w-full border-collapse border border-gray-300">
-                  {/* Table Header */}
-                  <thead className="bg-gray-200">
-                    <tr>
-                      <th className="px-4 py-2 border border-gray-400 text-left">
-                        Order ID
-                      </th>
-                      <th className="px-4 py-2 border border-gray-400 text-left">
-                        Price
-                      </th>
-                      <th className="px-4 py-2 border border-gray-400 text-left">
-                        Status
-                      </th>
-                      <th className="px-4 py-2 border border-gray-400 text-left">
-                        Date
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {/* Table Rows */}
-                    {orderHistory.map((order) => (
-                      <tr key={order._id} className="border-t">
-                        <td className="px-4 py-2 border border-gray-400">
-                          {order.id}
-                        </td>
-                        <td className="px-4 py-2 border border-gray-400">
-                          ${order.totalPrice}
-                        </td>
-                        <td
-                          className={`px-4 py-2 border border-gray-400 ${getStatusColor(
-                            order.status
-                          )}`}
-                        >
-                          {order.status}
-                        </td>
-                        <td className="px-4 py-2 border border-gray-400">
-                          {formatDate(order.createdAt)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                {/* New table layout with search and action buttons */}
+                <div className="-m-1.5 overflow-x-auto">
+                  <div className="p-1.5 min-w-full inline-block align-middle">
+                    <div className="border rounded-lg divide-y divide-gray-200">
+                      <div className="overflow-hidden">
+                        <table className="min-w-full divide-y divide-gray-200">
+                          <thead className="bg-gray-50">
+                            <tr>
+                              <th scope="col" className="py-3 px-4 pe-0">
+                                <div className="flex items-center h-5">
+                                  {/*   <input
+                                    id="hs-table-pagination-checkbox-all"
+                                    type="checkbox"
+                                    className="border-gray-200 rounded  checked:border-black focus:ring-black"
+                                  /> */}
+                                  <label
+                                    for="hs-table-pagination-checkbox-all"
+                                    className="sr-only"
+                                  >
+                                    Checkbox
+                                  </label>
+                                </div>
+                              </th>
+                              <th
+                                scope="col"
+                                className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                              >
+                                Order ID
+                              </th>
+                              <th
+                                scope="col"
+                                className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                              >
+                                Price
+                              </th>
+                              <th
+                                scope="col"
+                                className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                              >
+                                Status
+                              </th>
+                              <th
+                                scope="col"
+                                className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                              >
+                                Date
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-gray-200">
+                            {/* Render dynamic rows based on the orders */}
+                            {orderHistory.map((order) => (
+                              <tr key={order._id}>
+                                <td className="py-3 ps-4">
+                                  <div className="flex items-center h-5">
+                                    <input
+                                      id={`order-checkbox-${order._id}`}
+                                      type="checkbox"
+                                      className="border-gray-200 rounded text-black focus:ring-black"
+                                    />
+                                    <label
+                                      for={`order-checkbox-${order._id}`}
+                                      className="sr-only"
+                                    >
+                                      Checkbox
+                                    </label>
+                                  </div>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                                  #{order.id}
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                  ${order.totalPrice}
+                                </td>
+                                <td
+                                  className={`px-6 py-4 whitespace-nowrap text-sm ${getStatusColor(
+                                    order.status
+                                  )}`}
+                                >
+                                  {order.status}
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                  {formatDate(order.createdAt)}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

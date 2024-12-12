@@ -21,6 +21,7 @@ import CheckoutPage from "./pages/CheckoutPage/CheckOutPage";
 import Socks from "./componets/categoriesComponet/Socks";
 import Tracksuit from "./componets/categoriesComponet/Tracksuit";
 import OrderHistory from "./pages/OrderHistory/OrderHistory";
+import ProductMainDetails from "./pages/ProductDetailPage/ProductMainDetails";
 
 function App() {
   const [order, setOrder] = useState(null);
@@ -36,6 +37,7 @@ function App() {
           <Route path="/new-arrivals" element={<NewArrivals />} />
           <Route path="/best-collections" element={<BestCollections />} />
           <Route path="/products" element={<AllProduct />} />
+          <Route path="/product/:id" element={<ProductMainDetails />} />
           <Route
             path="/checkout"
             element={<CheckoutPage setOrder={setOrder} />}

@@ -5,6 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { addToCart } from "../redux/CartSlice";
 import { motion } from "framer-motion";
 import ModalForDetails from "../componets/Modal/ModalForDetails";
+import { PiLockKeyLight } from "react-icons/pi";
+import { Link } from "react-router-dom";
 
 const ProductPage = ({ product, images }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -43,30 +45,41 @@ const ProductPage = ({ product, images }) => {
         }}
         viewport={{ once: true }}
       >
-        <div onClick={() => handleShowModal(product)} className="w-full">
+        <div className="w-full">
           <div className="mx-2 rounded my-4 relative transform transition-transform duration-300">
             {/* Product Image */}
-            <div className="w-full h-[300px] relative">
-              <img
-                src={product.image}
-                className="w-full h-full object-contain"
-              />
-              <div className="absolute top-6 left-0 md:top-0 md:left-10 bg-green-500 text-white inline-block px-2 py-1 ">
-                <p className="text-[14px]">On Sale</p>
+            <Link to={`/product/${product.id}`}>
+              <div className="w-full h-[300px] relative">
+                <img src={product.image} className="w-full h-full object-fit" />
+                {/* "On Sale" Badge */}
+                <div
+                  className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold py-1 px-3 rounded"
+                  style={{ zIndex: 10 }}
+                >
+                  On Sale
+                </div>
               </div>
+            </Link>
+
+            <div
+              className="w-[50px] bg-gray-100 p-2 rounded-full flex items-center justify-right my-2 float-right"
+              style={{ fontSize: "30px", cursor: "pointer" }}
+              onClick={() => handleShowModal(product)}
+            >
+              <PiLockKeyLight />
             </div>
 
-            <div className="flex flex-col space-x-2 ">
-              <h3 className="text-[15px] font-light text-gray-800   truncate">
+            <div className="flex flex-col s mt-3">
+              <h3 className="text-[15px] font-medium text-gray-800 truncate">
                 {product.name}
               </h3>
 
-              <div className="flex     gap-4 items-center">
+              <div className="flex gap-4 items-center">
                 {/* Product Price */}
-                <p className="text-[12px] font-extralight text-black">
+                <p className="text-[14px] font-medium text-black">
                   ₦{product.price}
                 </p>
-                <p className="text-[12px] font-extralight text-red-500 line-through">
+                <p className="text-[14px] font-medium text-red-500 line-through">
                   $40000
                 </p>
               </div>
