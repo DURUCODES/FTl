@@ -2,50 +2,38 @@ import { useState } from "react";
 import { addToCart } from "../../redux/CartSlice";
 import { useDispatch } from "react-redux";
 import { GrClose } from "react-icons/gr";
-import Select from "react-select";
-import { ClipLoader } from "react-spinners"; // Assuming you're using react-spinners for the loading spinner
+import { ClipLoader } from "react-spinners";
+import { HiOutlineMinus } from "react-icons/hi";
+import { BsPlusLg } from "react-icons/bs";
+import { toast, ToastContainer } from "react-toastify";
 
 const ModalForDetails = ({ product, onClose, setOpenCart }) => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1); // Default quantity to 1
-  const [showAlert, setShowAlert] = useState(false); // State to manage alert visibility
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const dispatch = useDispatch();
 
   if (!product) return null;
 
-  const colorOptions = [
-    { value: "gray", label: "Gray", color: "#2d2d2d" },
-    { value: "red", label: "Red", color: "#f44336" },
-    { value: "blue", label: "Blue", color: "#2196f3" },
-    { value: "yellow", label: "Yellow", color: "#ffeb3b" },
-  ];
-
-  const sizeOptions = [
-    { value: "S", label: "S" },
-    { value: "M", label: "M" },
-    { value: "L", label: "L" },
-    { value: "XL", label: "XL" },
-    { value: "XXL", label: "XXL" },
-  ];
+  const colorOptions = product.colors;
+  const sizeOptions = product.sizes;
 
   const openCartFunction = () => {
     setOpenCart(true);
   };
+
   const handleAddToCart = async (e) => {
     e.stopPropagation();
     e.preventDefault();
 
-    // Check if both color and size are selected
     if (!selectedColor || !selectedSize) {
-      alert("Please select both a color and a size before adding to the cart.");
+      toast.warn("Please select a color and size before adding to cart.");
       return;
     }
 
     setIsLoading(true); // Set loading state to true when starting the add to cart action
 
-    // Simulate a network delay or async action (for example purposes)
     await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate 1 second loading
 
     // Create product object with selected options and quantity
@@ -59,10 +47,11 @@ const ModalForDetails = ({ product, onClose, setOpenCart }) => {
     // Dispatch action to add product to cart
     dispatch(addToCart(productWithOptions));
 
-    setIsLoading(false); // Set loading state to false after the product is added to cart
-
+    setIsLoading(false);
+    toast("Added to cart");
+    /* 
     onClose();
-    openCartFunction();
+    openCartFunction(); */
   };
 
   const handleIncrement = () => {
@@ -99,60 +88,61 @@ const ModalForDetails = ({ product, onClose, setOpenCart }) => {
               <h2 className="text-[24px] font-semibold">{product.name}</h2>
             </div>
             <p className="mt-2 text-[14px]">{product.description}</p>
-            <Select
-              value={selectedColor}
-              onChange={setSelectedColor}
-              options={colorOptions}
-              className="mt-4"
-              placeholder="Select Color"
-            />
-            <div className="mt-4">
-              <span className="font-bold">Select Size:</span>
+
+            {/* COLOR SELECTION */}
+            <div className="mb-4">
+              <span className="font-bold text-black">Select Color</span>
               <div className="flex gap-2 mt-2">
-                {sizeOptions?.map((size) => (
-                  <button
-                    key={size.value}
-                    onClick={() => setSelectedSize(size)}
-                    className={`px-4 py-2 border rounded-full ${
-                      selectedSize?.value === size.value
-                        ? "bg-black text-white"
-                        : "bg-white"
+                {colorOptions?.map((color, index) => (
+                  <div
+                    key={index}
+                    onClick={() => setSelectedColor(color)}
+                    className={`cursor-pointer w-10 h-10 ${
+                      selectedColor === color
+                        ? "border-2 border-blue-500"
+                        : "border border-gray-300"
                     }`}
-                  >
-                    {size.label}
-                  </button>
+                    style={{ backgroundColor: color }}
+                  ></div>
                 ))}
               </div>
             </div>
-            <div className="mt-4 flex md:justify-between">
-              <p className="text-[16px] font-light">
-                ₦{new Intl.NumberFormat().format(product.price)}
-                <span className="text-[14px] text-red-400 line-through mx-2">
-                  $1200
-                </span>
-              </p>
+
+            {/* SIZE SELECTION */}
+            <div className="mb-4">
+              <span className="font-bold text-black">Select Size</span>
+              <div className="flex gap-2 mt-2">
+                {sizeOptions?.map((size, index) => (
+                  <div
+                    key={index}
+                    onClick={() => setSelectedSize(size)}
+                    className={`cursor-pointer p-2 border rounded ${
+                      selectedSize === size
+                        ? "border-blue-500 bg-blue-100"
+                        : "border-gray-300"
+                    }`}
+                  >
+                    {size}
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* Quantity Selector */}
-            <div className="mt-4 flex flex-col gap-4">
-              <span className="font-bold">Quantity:</span>
-              <div className="space-x-2">
-                <button
-                  onClick={handleDecrement}
-                  className="px-2 py-1 border border-black"
-                >
-                  -
+            {/* QUANTITY */}
+            <div>
+              <span className="font-bold text-black">Quantity</span>
+              <div className="border border-black w-[120px] flex items-center justify-between py-1.5 px-4 text-[15px] my-2 ">
+                <button onClick={handleDecrement} className="px-2 py-1 ">
+                  <HiOutlineMinus />
                 </button>
                 <span>{quantity}</span>
-                <button
-                  onClick={handleIncrement}
-                  className="px-2 py-1 border border-black"
-                >
-                  +
+                <button onClick={handleIncrement} className="px-2 py-1">
+                  <BsPlusLg />
                 </button>
               </div>
             </div>
 
+            {/* ADD TO CART BUTTON */}
             <div className="flex flex-col-reverse my-4 gap-4 mt-6">
               <div className="flex flex-col w-full space-y-2">
                 <button
@@ -175,6 +165,8 @@ const ModalForDetails = ({ product, onClose, setOpenCart }) => {
           </div>
         </div>
       </div>
+
+      <ToastContainer />
     </div>
   );
 };

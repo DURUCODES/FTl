@@ -18,7 +18,7 @@ const Accordion = () => {
       <h2 id="accordion-open-heading-1">
         <button
           type="button"
-          className="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-black border-b-0 border-gray-200 rounded-t-xl focus:ring-4  dark:border-gray-700 text-black gap-3"
+          className="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-black border-b-0 border-gray-200 rounded-t-xl focus:ring-4  dark:border-gray-700  gap-3"
           onClick={() => toggleSection(1)}
           aria-expanded={openSection === 1}
           aria-controls="accordion-open-body-1"

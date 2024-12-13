@@ -7,6 +7,7 @@ import { PiInstagramLogoThin } from "react-icons/pi";
 import { CiAt } from "react-icons/ci";
 import { CiFacebook } from "react-icons/ci";
 import { RingLoader } from "react-spinners";
+import { IoLogoWhatsapp } from "react-icons/io";
 
 // Categories with the path to route to
 const Categories = [
@@ -23,6 +24,12 @@ const MobileNavBar = ({ closeMenuHandle, isOpen }) => {
   const [selectedCategory, setSelectedCategory] = useState(null); // Track selected category
   const navigate = useNavigate();
   const location = useLocation(); // Track current route location
+
+  // WhatsApp message pre-fill
+  const messageFtl = "Please, I need your assistance on ";
+  const phoneNumber = "2347010725792"; // Ensure this is the correct phone number format with country code
+  const encodedMessage = encodeURIComponent(messageFtl);
+  const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
 
   // Handle side menu visibility
   useEffect(() => {
@@ -118,7 +125,16 @@ const MobileNavBar = ({ closeMenuHandle, isOpen }) => {
                   : ftljagor32@gmail.com
                 </p>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center text-[24px] space-x-2">
+                <span>
+                  <a
+                    href={whatsappURL} // Updated WhatsApp URL
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <IoLogoWhatsapp />
+                  </a>
+                </span>
                 <span>
                   <PiInstagramLogoThin />
                 </span>

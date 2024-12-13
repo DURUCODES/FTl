@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import ModalForDetails from "../Modal/ModalForDetails";
 import "react-toastify/dist/ReactToastify.css";
 import { RingLoader } from "react-spinners";
+import { Link } from "react-router-dom";
+import { PiLockKeyLight } from "react-icons/pi";
 
 const Socks = () => {
   const [categoryProducts, setCategoryProducts] = useState([]);
@@ -19,6 +21,7 @@ const Socks = () => {
         const response = await axios.get(
           "https://ftl-server.onrender.com/api/products"
         );
+        console.log("responses", response.data);
         const filteredProducts = response.data.data.filter(
           (product) => product.categoryId === categoryId
         );
@@ -53,7 +56,7 @@ const Socks = () => {
         </div>
       ) : (
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-6"
+          className="grid grid-cols-2 md:grid-cols-6 md:gap-6 pl-3 mb-10 pr-3 flex flex-col justify-between md:items-start"
           initial={{ opacity: 0, x: -10 }}
           whileInView={{
             opacity: 1,
@@ -67,34 +70,51 @@ const Socks = () => {
         >
           {categoryProducts.length > 0 ? (
             categoryProducts.map((product) => (
-              <div key={product.id} onClick={() => handleShowModal(product)}>
-                <div className="mx-2 rounded my-4 relative transform transition-transform duration-300">
-                  {/* Product Image */}
+              <div
+                key={product.id}
+                className="mx-2 rounded my-4 relative transform transition-transform duration-300"
+              >
+                {/* Product Image */}
+                <Link to={`/collections/${product.id}`}>
                   <div className="w-full h-[250px] relative">
                     <img
                       src={product.image}
                       className="w-full h-full object-contain mx-auto rounded-md"
                       alt={product.name}
                     />
-                    <div className="absolute top-0 left-0 bg-green-500 text-white inline-block px-2 py-1 ">
-                      <p className="text-[14px]">On Sale</p>
+                    {/* "On Sale" Badge */}
+                    <div
+                      className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold py-1 px-3"
+                      style={{ zIndex: 10 }}
+                    >
+                      On Sale
                     </div>
                   </div>
+                </Link>
 
-                  <div className="flex flex-col space-x-2">
-                    <h3 className="text-[15px] font-light text-gray-800 truncate">
-                      {product.name}
-                    </h3>
+                {/* Lock Icon */}
+                <div
+                  className="w-[50px] bg-gray-100 p-2 rounded-full flex items-center justify-right my-2 float-right"
+                  style={{ fontSize: "30px", cursor: "pointer" }}
+                  onClick={() => handleShowModal(product)}
+                >
+                  <PiLockKeyLight />
+                </div>
 
-                    <div className="flex gap-4 items-center">
-                      {/* Product Price */}
-                      <p className="text-[12px] font-extralight text-black">
-                        ₦{new Intl.NumberFormat().format(product.price)}
-                      </p>
-                      <p className="text-[12px] font-extralight text-red-500 line-through">
-                        $40000
-                      </p>
-                    </div>
+                {/* Product Info */}
+                <div className="flex flex-col mt-3">
+                  <h3 className="text-[15px] font-light text-gray-800 truncate">
+                    {product.name}
+                  </h3>
+
+                  <div className="flex gap-4 items-center">
+                    {/* Product Price */}
+                    <p className="text-[12px] font-extralight text-black">
+                      ₦{new Intl.NumberFormat().format(product.price)}
+                    </p>
+                    <p className="text-[12px] font-extralight text-red-500 line-through">
+                      $40000
+                    </p>
                   </div>
                 </div>
               </div>
