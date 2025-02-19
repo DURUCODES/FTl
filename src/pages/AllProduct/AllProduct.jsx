@@ -6,7 +6,7 @@ const AllProduct = () => {
     <div className="my-[]">
       <p>all product page here</p>
 
-      <div className="flex flex-col items-center">
+      {/*   <div className="flex flex-col items-center">
         <div className="flex flex-col  items-center px-0 mb-5 md:px-2 cursor-pointer">
           <ul className="flex flex-col cursor-pointer  text-sm">
             <li className=" md:px-4 mb-4 md:mb-0">Top sales</li>
@@ -16,7 +16,7 @@ const AllProduct = () => {
             <li className=" md:px-4 mb-4 md:mb-0">Collection</li>
           </ul>
         </div>
-      </div>
+      </div> */}
       <hr className=" mb-6 border-white w-full" />
       <div>
         <div className=" flex-col flex md:hidden items-start ">

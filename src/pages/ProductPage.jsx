@@ -7,10 +7,12 @@ import { motion } from "framer-motion";
 import ModalForDetails from "../componets/Modal/ModalForDetails";
 import { PiLockKeyLight } from "react-icons/pi";
 import { Link } from "react-router-dom";
+import QuickView from "../componets/QuickView/QuickView";
 
-const ProductPage = ({ product, images }) => {
+const ProductPage = ({ product }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [quickOpen, setQuickView] = useState(false); // State to control QuickView visibility
   const dispatch = useDispatch();
 
   const handleAddToCart = (e, product) => {
@@ -28,6 +30,16 @@ const ProductPage = ({ product, images }) => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedProduct(null);
+  };
+
+  // Function to open QuickView
+  const handleQuickViewOpen = () => {
+    setQuickView(true);
+  };
+
+  // Function to close QuickView
+  const handleQuickViewClose = () => {
+    setQuickView(false);
   };
 
   return (
@@ -62,9 +74,9 @@ const ProductPage = ({ product, images }) => {
             </Link>
 
             <div
-              className="w-[50px] bg-gray-100 p-2 rounded-full flex items-center justify-right my-2 float-right"
-              style={{ fontSize: "30px", cursor: "pointer" }}
-              onClick={() => handleShowModal(product)}
+              className="w-[40px] shadow-sm border  p-2 rounded-full flex items-center justify-right my-2 float-right"
+              style={{ fontSize: "25px", cursor: "pointer" }}
+              onClick={handleQuickViewOpen} // Open QuickView when clicked
             >
               <PiLockKeyLight />
             </div>
@@ -91,6 +103,15 @@ const ProductPage = ({ product, images }) => {
           <ModalForDetails
             product={selectedProduct}
             onClose={handleCloseModal}
+          />
+        )}
+
+        {/* QuickView Modal */}
+        {quickOpen && (
+          <QuickView
+            onClose={handleQuickViewClose}
+            quickOpen={quickOpen}
+            product={product}
           />
         )}
 

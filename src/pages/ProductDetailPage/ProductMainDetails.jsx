@@ -10,6 +10,7 @@ import { addToWishList } from "../../redux/wishListSlice";
 import { motion } from "framer-motion";
 import { RingLoader } from "react-spinners"; // Import RingLoader here
 import { HiOutlineMinus } from "react-icons/hi";
+import Select from "react-select"; // Import react-select
 
 const ProductMainDetails = () => {
   const { id } = useParams();
@@ -83,6 +84,27 @@ const ProductMainDetails = () => {
     }
   };
 
+  // Transform color options for react-select
+  const colorOptions = product?.colors?.map((color) => ({
+    value: color,
+    label: (
+      <div
+        style={{
+          backgroundColor: color,
+          width: 20,
+          height: 20,
+          borderRadius: "50%",
+        }}
+      ></div>
+    ),
+  }));
+
+  // Transform size options for react-select
+  const sizeOptions = product?.sizes?.map((size) => ({
+    value: size,
+    label: size,
+  }));
+
   if (loading) {
     // Show loading spinner while product is being fetched
     return (
@@ -98,16 +120,31 @@ const ProductMainDetails = () => {
       animate={{ opacity: 1, y: 0 }} // Final state: fully visible
       transition={{ duration: 0.8, ease: "easeInOut" }} // Smooth transition
     >
-      <div className="flex flex-col md:flex-row justify-between md:max-w-8xl md:mx-auto p-3 md:gap-4">
-        <div className="md:w-1/2 rounded-lg bg-gray-100 mb-4">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-[460px]"
-          />
+      <div className="flex flex-col md:flex-row  justify-evenly  md:max-w-8xl md:mx-auto md:p-3 md:px-8 md:gap-4 my-8">
+        <div className="md:w-1/2 flex flex-col-reverse md:flex-row  justify-between space--4 rounded-lg  mb-4">
+          <div className="md:space-y-4  space-x-4 md:space-x-0 flex  flex-row items-center md:flex-col md:p-0 p-4 mx-auto md:mx-0">
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-[100px] h-[100px] object-fit rounded-2xl border border-black"
+            />
+
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-[100px] h-[100px] object-fit rounded-2xl border border-black"
+            />
+          </div>
+          <div className="w-full">
+            <img
+              src={product.image}
+              alt={product.name}
+              className="md:w-[600px] w-full h-[660px] object-fit "
+            />
+          </div>
         </div>
 
-        <div className="md:w-1/2 md:px-8">
+        <div className="md:w-1/2 md:px-8 px-2">
           <p className="text-[12px]">FTL</p>
           <div>
             <h2 className="text-2xl font-bold text-black mb-2">
@@ -133,40 +170,31 @@ const ProductMainDetails = () => {
           {/* SIZE SELECTION */}
           <div className="mb-4">
             <span className="font-bold text-black">Select Size</span>
-            <div className="flex gap-2 mt-2">
-              {product.sizes?.map((size, index) => (
-                <div
-                  key={index}
-                  onClick={() => setSelectedSize(size)}
-                  className={`cursor-pointer p-2 border rounded ${
-                    selectedSize === size
-                      ? "border-blue-500 bg-blue-100"
-                      : "border-gray-300"
-                  }`}
-                >
-                  {size}
-                </div>
-              ))}
-            </div>
+            <Select
+              options={sizeOptions}
+              onChange={(selectedOption) =>
+                setSelectedSize(selectedOption?.value)
+              }
+              value={sizeOptions?.find(
+                (option) => option.value === selectedSize
+              )}
+              placeholder="Select Size"
+            />
           </div>
 
           {/* COLOR SELECTION */}
           <div className="mb-4">
-            <span className="font-bold text-black"> Color</span>
-            <div className="flex gap-2 mt-2">
-              {product.colors?.map((color, index) => (
-                <div
-                  key={index}
-                  onClick={() => setSelectedColor(color)}
-                  className={`cursor-pointer w-10 h-10 round ${
-                    selectedColor === color
-                      ? "border-2 border-blue-500"
-                      : "border border-gray-300"
-                  }`}
-                  style={{ backgroundColor: color }}
-                ></div>
-              ))}
-            </div>
+            <span className="font-bold text-black">Color</span>
+            <Select
+              options={colorOptions}
+              onChange={(selectedOption) =>
+                setSelectedColor(selectedOption?.value)
+              }
+              value={colorOptions?.find(
+                (option) => option.value === selectedColor
+              )}
+              placeholder="Select Color"
+            />
           </div>
 
           {/* QUANTITY */}

@@ -22,6 +22,7 @@ import Socks from "./componets/categoriesComponet/Socks";
 import Tracksuit from "./componets/categoriesComponet/Tracksuit";
 import OrderHistory from "./pages/OrderHistory/OrderHistory";
 import ProductMainDetails from "./pages/ProductDetailPage/ProductMainDetails";
+import CartforCheckout from "./pages/CartPage/CartforCheckout";
 
 function App() {
   const [order, setOrder] = useState(null);
@@ -56,6 +57,7 @@ function App() {
 
           <Route path="/collection/socks" element={<Socks />} />
           <Route path="/order-history" element={<OrderHistory />} />
+          <Route path="/cart" element={<CartforCheckout />} />
         </Routes>
         <ToastContainer />
         <Footer />

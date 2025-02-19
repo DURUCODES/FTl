@@ -7,11 +7,11 @@ import { HiOutlineMinus } from "react-icons/hi";
 import { BsPlusLg } from "react-icons/bs";
 import { toast, ToastContainer } from "react-toastify";
 
-const ModalForDetails = ({ product, onClose, setOpenCart }) => {
+const ModalForDetails = ({ product, onClose, setOpenCart, openCart }) => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
-  const [quantity, setQuantity] = useState(1); // Default quantity to 1
-  const [isLoading, setIsLoading] = useState(false); // Loading state
+  const [quantity, setQuantity] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
   if (!product) return null;
@@ -49,9 +49,6 @@ const ModalForDetails = ({ product, onClose, setOpenCart }) => {
 
     setIsLoading(false);
     toast("Added to cart");
-    /* 
-    onClose();
-    openCartFunction(); */
   };
 
   const handleIncrement = () => {

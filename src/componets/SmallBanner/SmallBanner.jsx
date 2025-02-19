@@ -1,6 +1,6 @@
 import React from "react";
-import image1 from "./ii.jpg";
-import image2 from "./ops.jpg";
+import image1 from "./ftl4.JPG";
+import image2 from "./ftl3.JPG";
 
 const SmallBanner = () => {
   return (

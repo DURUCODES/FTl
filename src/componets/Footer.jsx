@@ -6,7 +6,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { FaPinterestP } from "react-icons/fa";
 import { CiFacebook } from "react-icons/ci";
 import { FaWhatsapp } from "react-icons/fa";
-
+import { GrLocationPin } from "react-icons/gr";
 const Footer = () => {
   return (
     <div className="bg-black pt-5 pb-2 md:px-4 overflow-hidden border-black border-[1px]">
@@ -36,7 +36,8 @@ const Footer = () => {
               Contact
             </motion.h4>
             <motion.p
-              className="mb-2 text-[14px] underline"
+              className="mb-2 text-[14px] flex
+              items-center "
               initial={{ opacity: 0, x: 100 }}
               whileInView={{
                 opacity: 1,
@@ -50,42 +51,10 @@ const Footer = () => {
               }}
               viewport={{ once: true }}
             >
-              Ago Palace, Tinubu, Lagos, Startime Estate, Isolo
+              <GrLocationPin className=" " />
+              Lagos Nigeria
             </motion.p>
-            <motion.p
-              className="mb-2 text-[14px] hover:underline"
-              initial={{ opacity: 0, x: 100 }}
-              whileInView={{
-                opacity: 1,
-                x: 0,
-                transition: {
-                  type: "spring",
-                  bounce: 0.5,
-                  duration: 2,
-                  delay: 0.4,
-                },
-              }}
-              viewport={{ once: true }}
-            >
-              Operating hours: Monday – Saturday (10am - 10pm)
-            </motion.p>
-            <motion.p
-              className="mb-2 text-[14px] hover:underline"
-              initial={{ opacity: 0, x: 100 }}
-              whileInView={{
-                opacity: 1,
-                x: 0,
-                transition: {
-                  type: "spring",
-                  bounce: 0.5,
-                  duration: 2,
-                  delay: 0.6,
-                },
-              }}
-              viewport={{ once: true }}
-            >
-              Sunday (12pm - 10pm)
-            </motion.p>
+
             <motion.p
               className="mb-2 text-[14px] hover:underline"
               initial={{ opacity: 0, x: 100 }}
@@ -143,9 +112,6 @@ const Footer = () => {
               viewport={{ once: true }}
             >
               <motion.li className="mb-2 text-[14px] hover:underline">
-                All Items
-              </motion.li>
-              <motion.li className="mb-2 text-[14px] hover:underline">
                 Men
               </motion.li>
               <motion.li className="mb-2 text-[14px] hover:underline">
@@ -200,7 +166,7 @@ const Footer = () => {
             >
               <FaInstagram size={24} />
               <FaXTwitter size={24} />
-              <FaPinterestP size={24} />
+              {/*     <FaPinterestP size={24} /> */}
               <CiFacebook size={24} />
               <FaWhatsapp size={24} />
             </motion.div>

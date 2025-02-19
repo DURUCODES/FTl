@@ -5,7 +5,8 @@ import MobileSearchBar from "../SearchBarcom/MobileSearchBar";
 import CartSide from "../SideCartOpening/CartSide";
 import LoginSlide from "../LoginSlide/LoginSlide";
 import ModalForDetails from "../Modal/ModalForDetails";
-import FilterDataPage from "../../pages/FilterDataPage";
+import QuickView from "../QuickView/QuickView";
+import ProductPage from "../../pages/ProductPage";
 
 const ResposiveNavBar = () => {
   const [isOpen, setIsOpen] = useState(false);

@@ -153,10 +153,10 @@ const CartSide = ({
                                 {product.name}
                               </p>
                               <p>{product.description}</p>
-                              <p>{product.size}</p>
+                              <p>{product.sizes}</p>
                               <p>{product.color}</p>
                               <div className=" flex items-center">
-                                <div className=" border-black border px-2 md:px-5 space-x-4 mr-2">
+                                <div className=" border-black border  w-[80px] text-center space-x-4 mr-2">
                                   <button
                                     onClick={() =>
                                       dispatch(decreaseQuantity(product.id))
@@ -185,7 +185,7 @@ const CartSide = ({
                           </div>
 
                           <div>
-                            {/* Price */}${product.price}
+                            {/* Price */}₦{product.price}
                           </div>
                         </div>
                       </div>

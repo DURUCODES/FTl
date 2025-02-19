@@ -1,10 +1,10 @@
 import React from "react";
-import ftl from "./mes.jpg";
+import banner from "./ftl2.JPG";
 
 const MainBanner = () => {
   return (
     <div className="overflow-hidden h-screen">
-      <img src={ftl} alt="Banner" className="w-full h-full object-fit" />
+      <img src={banner} alt="Banner" className="w-full h-full cover" />
     </div>
   );
 };

@@ -27,7 +27,7 @@ const HomePage = () => {
 
         console.log("respiiii", response.data);
         dispatch(setProduct(response.data.data));
-
+        gq;
         // Filter Top sales products based on categoryId (8 and 9)
         const filterTopSales = response.data.data.filter(
           (product) => product.categoryId === 8
@@ -93,7 +93,7 @@ const HomePage = () => {
                 <ProductPage key={item.id} product={item} images={item.image} />
               ))
             ) : (
-              <p>No products available for Black Friday specials.</p>
+              <p>No products available for Black Friday specialsssss.</p>
             )}
           </div>
         );

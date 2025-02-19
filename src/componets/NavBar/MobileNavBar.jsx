@@ -109,9 +109,9 @@ const MobileNavBar = ({ closeMenuHandle, isOpen }) => {
                 ))}
               </ul>
             </div>
-            <div className="flex flex-col my-2 font-extralight text-[14px] space-y-2 p-2">
+            <div className="flex flex-col my-0 text-[14px] space-y-2 p-2">
               <div>
-                <p className="flex items-center font-extralight mb-2">
+                <p className="flex items-center  mb-2">
                   <span>
                     <MdOutlinePhoneIphone />
                   </span>

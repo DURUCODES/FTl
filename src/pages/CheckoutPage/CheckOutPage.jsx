@@ -10,12 +10,15 @@ import verve from "../CheckoutPage/images/verve.png";
 import master from "../CheckoutPage/images/master.svg";
 import mtn from "../CheckoutPage/images/mtn.svg";
 import ama from "../CheckoutPage/images/atm.png";
+import { CiSquarePlus } from "react-icons/ci";
+import { CiCircleMinus } from "react-icons/ci";
 import { CiShoppingCart } from "react-icons/ci";
 import logo from "./ftlmain2.png";
 import { FiShoppingBag } from "react-icons/fi";
 const CheckoutPage = () => {
   const location = useLocation(); // Use location hook to get passed state
   const cart = useSelector((state) => state.cart);
+  const [showNote, setShowNote] = useState(false);
   const navigate = useNavigate();
 
   const [deliveryMethod, setDeliveryMethod] = useState("delivery"); // default to 'delivery'
@@ -164,6 +167,14 @@ const CheckoutPage = () => {
       },
     });
   };
+
+  const showNoteFunction = () => {
+    setShowNote(true);
+  };
+
+  const hideNoteFunction = () => {
+    setShowNote(false);
+  };
   return (
     <div className="  text-black ">
       <div className=" ">
@@ -172,9 +183,11 @@ const CheckoutPage = () => {
             {" "}
             <img src={logo} className="w-[200px] h-[100px]" />
           </Link>
-          <span className="flex items-center text-[40px] cursor-pointer">
-            <FiShoppingBag />
-          </span>
+          <Link to="/cart">
+            <span className="flex items-center text-[40px] cursor-pointer">
+              <FiShoppingBag />
+            </span>
+          </Link>
         </div>
         <div className="flex flex-col md:flex-row justify-between md:space-x-4 md:border-t-[2px]">
           <div className="md:w-1/2 md:border-r-[2px] md:py-4 py-4 md:px-2  md:px-18 h-[100%]">
@@ -699,6 +712,37 @@ const CheckoutPage = () => {
                 <button className=" hover:bg-black focus:bg-black px-6 rounded bg-gray-500 cursor-pointer">
                   Apply
                 </button>
+              </div>
+
+              <div className="flex flex-col justify-between gap-4 border-t  border-gray-200 pt-2 dark:border-gray-700">
+                <div className="flex items-center justify-between my-2">
+                  <p className="text-[14px] font-medium text-black">
+                    Order note
+                  </p>
+                  <p
+                    className="text-[22px] cursor-pointer text-black"
+                    onClick={showNote ? hideNoteFunction : showNoteFunction}
+                  >
+                    <CiSquarePlus
+                      className={`${showNote ? "hidden" : "block"}`}
+                    />
+                    <CiCircleMinus
+                      className={`${showNote ? "block" : "hidden"}`}
+                    />
+                  </p>
+                </div>
+
+                <div
+                  className={`overflow-hidden transition-all duration-600 ease-in-out ${
+                    showNote ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                  }`}
+                >
+                  {showNote && (
+                    <form className="px-2">
+                      <textarea className="w-full  focus:outline-black  border border-black text-black p-4" />
+                    </form>
+                  )}
+                </div>
               </div>
 
               <div className="mt-4  pt-4 space-y-2">
