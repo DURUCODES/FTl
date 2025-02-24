@@ -14,7 +14,7 @@ const UserProfile = ({ handleLoginClose }) => {
   // State to manage modal visibility
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
-    fullName: user?.fullName || "",
+    name: user?.name || "",
     email: user?.email || "",
     password: "", // You can use this to handle password change
   });
@@ -75,14 +75,13 @@ const UserProfile = ({ handleLoginClose }) => {
           {/* Profile Picture */}
           <div className="relative w-[50px] h-[50px] rounded-full text-center bg-black flex items-center justify-center">
             <span className="text-white text-[30px] font-bold">
-              {user?.fullName[0]}{" "}
-              {/* Display first letter of user's full name */}
+              {user?.name[0]} {/* Display first letter of user's full name */}
             </span>
           </div>
 
           {/* User Name and Email */}
           <h1 className="mt-2 text-xl font-bold text-gray-900">
-            {user?.fullName} {/* Display full name */}
+            {user?.name} {/* Display full name */}
           </h1>
           <h3 className="font-lg text-semibold mb-2 text-gray-600">
             {user?.email} {/* Display user's email */}
@@ -147,14 +146,14 @@ const UserProfile = ({ handleLoginClose }) => {
             <form onSubmit={handleSubmit}>
               {/* Name Field */}
               <div className="mb-4">
-                <label htmlFor="fullName" className="block text-sm font-medium">
+                <label htmlFor="name" className="block text-sm font-medium">
                   Full Name
                 </label>
                 <input
                   type="text"
-                  id="fullName"
-                  name="fullName"
-                  value={formData.fullName}
+                  id="name"
+                  name="name"
+                  value={formData.name}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border rounded-md"
                 />

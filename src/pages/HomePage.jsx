@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setProduct } from "../redux/ProductSlice";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import ProductPage from "./ProductPage";
 import MainBanner from "./ProductLink/MainBanner";
 import SmallBanner from "../componets/SmallBanner/SmallBanner";
 import Outro from "../componets/Outtro/Outro";
+import api from "../libs/axiosInstance";
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -21,13 +21,10 @@ const HomePage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(
-          "https://ftl-server.onrender.com/api/products"
-        );
+        const response = await api.get("/products");
 
         console.log("respiiii", response.data);
         dispatch(setProduct(response.data.data));
-        gq;
         // Filter Top sales products based on categoryId (8 and 9)
         const filterTopSales = response.data.data.filter(
           (product) => product.categoryId === 8
@@ -64,9 +61,13 @@ const HomePage = () => {
       case "top-sales":
         return (
           <div className="grid grid-cols-1 md:grid-cols-4">
-            {topSales.length > 0 ? (
-              topSales.map((item) => (
-                <ProductPage key={item.id} product={item} images={item.image} />
+            {products.length > 0 ? (
+              products.map((item) => (
+                <ProductPage
+                  key={item._id}
+                  product={item}
+                  images={item.image}
+                />
               ))
             ) : (
               <p>No products available for Black Friday specials.</p>
