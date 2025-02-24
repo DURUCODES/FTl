@@ -60,6 +60,7 @@ const ProductMainDetails = () => {
       };
 
       dispatch(addToCart(productWithDetails));
+      console.log("Product added to cart:", productWithDetails);
       toast("Added to cart");
 
       setIsLoading(false); // Stop loading
