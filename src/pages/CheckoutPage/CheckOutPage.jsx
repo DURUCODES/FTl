@@ -27,7 +27,7 @@ const CheckoutPage = () => {
   const [billingInfo, setBillingInfo] = useState({
     fullName: location.state?.billingInfo?.fullName || "",
     phoneNumber: location.state?.billingInfo?.phoneNumber || "",
-    email: location.state?.billingInfo?.email || "",
+    email: location.state?.billingInfo?.email || "annagu.kennedy@gmail.com",
   });
 
   const [shippingInfo, setShippingInfo] = useState({
@@ -90,9 +90,9 @@ const CheckoutPage = () => {
     if (!billingInfo.fullName) {
       validationErrors.fullName = "Full name is required";
     }
-    if (!billingInfo.email) {
-      validationErrors.billingEmail = "Email is required";
-    }
+    // if (!billingInfo.email) {
+    //   validationErrors.billingEmail = "Email is required";
+    // }
     if (!billingInfo.phoneNumber) {
       validationErrors.phoneNumber = "Phone number is required";
     }
@@ -130,11 +130,11 @@ const CheckoutPage = () => {
 
   // Handle order and payment submission
   const handleOrder = () => {
-    const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return; // Don't proceed if validation fails
-    }
+    // const validationErrors = validateForm();
+    // if (Object.keys(validationErrors).length > 0) {
+    //   setErrors(validationErrors);
+    //   return; // Don't proceed if validation fails
+    // }
 
     const paystack = new PaystackPop();
 
@@ -652,7 +652,7 @@ const CheckoutPage = () => {
               <div className="">
                 <button
                   onClick={handleOrder}
-                  disabled={Object.keys(errors).length > 0}
+                  // disabled={Object.keys(errors).length > 0}
                   className="relative group cursor-pointer text-sky-50 mx-auto overflow-hidden h-16 w-full  rounded-md bg-black my-4 flex justify-center items-center font-extrabold"
                 >
                   <p className="capitalize">

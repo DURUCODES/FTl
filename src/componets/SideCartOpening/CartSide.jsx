@@ -34,33 +34,29 @@ const CartSide = ({
 
   // CREATE ORDER TO SEND TO API FUNCTION////
   const createOrder = async () => {
-    const orderItems = cart.product.map((product) => ({
+    const products = cart.product.map((product) => ({
       productId: product.id,
       quantity: product.quantity,
     }));
-    console.log("Order items being sent:", orderItems);
 
     try {
-      const response = await api.post(
-        "/orders/create",
-        {
-          orderItems: orderItems,
-        },
-        {
-          withCredentials: true, // Send credentials with request
-        }
-      );
+      const response = await api.post("/orders/user/new", {
+        products,
+        shippingAddress: "suleja",
+      });
       console.log("Order created successfully:", response.data);
-      const orderId = response.data.id;
+      const { _id } = response.data.data;
+
+      const orderId = _id;
+      console.log("ID FROM RESPONSE", _id);
       setOrderId(orderId);
       console.log("ID FROM RESPONSE", orderId);
       return { success: true, orderId };
     } catch (error) {
-      // console.error(
-      //   "Error creating order:",
-      //   error.response?.data || error.message
-      // );
-      console.log("Error creating order:", error);
+      console.error(
+        "Error creating order:",
+        error.response?.data || error.message
+      );
     }
   };
 
