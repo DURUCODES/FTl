@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { RiCloseLargeLine } from "react-icons/ri";
 import { useAuth } from "../../ContextAuth/ContextAuth";
-import axios from "axios";
 import UserProfile from "./UserProfile";
 import logoimg from "./logimg.jpg";
 import api from "../../libs/axiosInstance";
@@ -18,7 +17,7 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [dotAnimation, setDotAnimation] = useState("");
   const [errorMessage, setErrorMessage] = useState(""); // State to hold error message
-  const { login, logout, isAuthenticated } = useAuth();
+  const { logout, setIsAuthenticated, setUser, isAuthenticated } = useAuth();
 
   useEffect(() => {
     if (openLogin) {
@@ -38,59 +37,59 @@ const LoginSlide = ({ handleLoginClose, openLogin }) => {
     }));
   };
 
-  // LOGIN FUNCTION
-  const loginUser = (email, password) => {
+  const loginUser = async (email, password) => {
+    setErrorMessage("");
     setIsSubmitting(true);
     setLoading(true);
-    setErrorMessage(""); // Reset error message before each login attempt
 
-    api
-      .post("/auth/login", { email, password }, { withCredentials: true })
-      .then((response) => {
-        const token = response?.data?.token;
-        const userData = response?.data?.user;
-        login(token, userData);
-        setTimeout(() => {
-          handleLoginClose();
-          setDotAnimation("");
-        }, 1000);
-      })
-      .catch((error) => {
-        setIsSubmitting(false);
-        setLoading(false);
-        if (error.response?.data?.message) {
-          setErrorMessage(error.response.data.message); // Display error from server
-        } else {
-          setErrorMessage("email or password not correct.");
-        }
-      });
+    try {
+      const response = await api.post("/users/login", { email, password });
+
+      const { token, user } = response.data.data;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("userData", JSON.stringify(user));
+      setIsAuthenticated(true);
+      setUser(user);
+      setTimeout(() => {
+        handleLoginClose();
+        setDotAnimation("");
+      }, 1000);
+    } catch (error) {
+      console.error("Error logging in:", error);
+    } finally {
+      setLoading(false);
+      setIsSubmitting(false);
+      // setDotAnimation("");
+    }
   };
 
+  // LOGIN FUNCTION
+
   // SIGNUP FUNCTION
-  const signupUser = (email, password, fullName) => {
+  const signupUser = async (email, password, name) => {
     setIsSubmitting(true);
     setLoading(true);
     setErrorMessage(""); // Reset error message before each signup attempt
 
-    api
-      .post("/auth/register", { email, password, fullName })
-      .then((response) => {
-        setTimeout(() => {
-          setIsSignup(false);
-          setIsSubmitting(false);
-          setLoading(false);
-          setDotAnimation("");
-        }, 3000);
-      })
-      .catch((error) => {
+    try {
+      const response = await api.post("/users/register", {
+        email,
+        password,
+        name,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error signing up:", error);
+      setErrorMessage("User with same email already exist.");
+    } finally {
+      setTimeout(() => {
+        setIsSignup(false);
         setIsSubmitting(false);
         setLoading(false);
-        if (error.response?.data?.message) {
-          setErrorMessage(error.response.data.message); // Display error from server
-        } else {
-          setErrorMessage("User with same email already exist.");
-        }
-      });
+        setDotAnimation("");
+      }, 3000);
+    }
   };
 
   const handleSignupSubmit = (e) => {

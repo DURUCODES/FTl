@@ -21,18 +21,18 @@ const cartSlice = createSlice({
   reducers: {
     addToCart(state, action) {
       const newItem = action.payload;
-      const itemIndex = state.product.find((item) => item.id === newItem.id);
+      const itemIndex = state.product.find((item) => item._id === newItem._id);
       if (itemIndex) {
         itemIndex.quantity++;
         itemIndex.totalPrice += newItem.price;
       } else {
         state.product.push({
-          id: newItem.id,
+          id: newItem._id,
           name: newItem.name,
           price: newItem.price,
           quantity: 1,
           totalPrice: newItem.price,
-          image: newItem.image,
+          image: newItem.images,
           color: newItem.selectedColor,
           size: newItem.selectedSize,
         });
@@ -45,12 +45,12 @@ const cartSlice = createSlice({
     },
 
     removeFromCart(state, action) {
-      const id = action.payload;
-      const findItem = state.product.find((item) => item.id === id);
+      const _id = action.payload;
+      const findItem = state.product.find((item) => item._id === _id);
       if (findItem) {
         state.totalPrice -= findItem.totalPrice;
         state.totalQuantity -= findItem.quantity;
-        state.product = state.product.filter((item) => item.id !== id);
+        state.product = state.product.filter((item) => item._id !== _id);
       }
 
       // Update localStorage
@@ -58,8 +58,8 @@ const cartSlice = createSlice({
     },
 
     increaseQuantity(state, action) {
-      const id = action.payload;
-      const findItem = state.product.find((item) => item.id === id);
+      const _id = action.payload;
+      const findItem = state.product.find((item) => item._id === _id);
       if (findItem) {
         findItem.quantity++;
         findItem.totalPrice += findItem.price;
@@ -72,8 +72,8 @@ const cartSlice = createSlice({
     },
 
     decreaseQuantity(state, action) {
-      const id = action.payload;
-      const findItem = state.product.find((item) => item.id === id);
+      const _id = action.payload;
+      const findItem = state.product.find((item) => item._id === _id);
       if (findItem && findItem.quantity > 1) {
         findItem.quantity--;
         findItem.totalPrice -= findItem.price;
@@ -84,7 +84,7 @@ const cartSlice = createSlice({
       // Handle the case where quantity reaches 0 and remove item
       if (findItem && findItem.quantity === 1) {
         state.totalPrice -= findItem.price;
-        state.product = state.product.filter((item) => item.id !== id);
+        state.product = state.product.filter((item) => item._id !== _id);
       }
 
       // Update localStorage

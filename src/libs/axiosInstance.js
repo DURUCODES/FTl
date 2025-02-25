@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://ftl-server.onrender.com/api",
-  withCredentials: true,
+  baseURL: "http://localhost:3000/api",
 });
 
 api.interceptors.request.use(
