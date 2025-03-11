@@ -1,5 +1,4 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { useDispatch } from "react-redux";
@@ -11,6 +10,7 @@ import { motion } from "framer-motion";
 import { RingLoader } from "react-spinners"; // Import RingLoader here
 import { HiOutlineMinus } from "react-icons/hi";
 import Select from "react-select"; // Import react-select
+import api from "../../libs/axiosInstance";
 
 const ProductMainDetails = () => {
   const { id } = useParams();
@@ -25,11 +25,9 @@ const ProductMainDetails = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(
-          `https://ftl-server.onrender.com/api/products/${id}`
-        );
+        const response = await api.get(`/products/${id}`);
         console.log(response.data);
-        setProduct(response.data);
+        setProduct(response.data.data);
       } catch (error) {
         console.error("Error fetching product details:", error);
       } finally {
@@ -62,6 +60,7 @@ const ProductMainDetails = () => {
       };
 
       dispatch(addToCart(productWithDetails));
+      console.log("Product added to cart:", productWithDetails);
       toast("Added to cart");
 
       setIsLoading(false); // Stop loading
@@ -124,20 +123,20 @@ const ProductMainDetails = () => {
         <div className="md:w-1/2 flex flex-col-reverse md:flex-row  justify-between space--4 rounded-lg  mb-4">
           <div className="md:space-y-4  space-x-4 md:space-x-0 flex  flex-row items-center md:flex-col md:p-0 p-4 mx-auto md:mx-0">
             <img
-              src={product.image}
+              src={product.images}
               alt={product.name}
               className="w-[100px] h-[100px] object-fit rounded-2xl border border-black"
             />
 
             <img
-              src={product.image}
+              src={product.images}
               alt={product.name}
               className="w-[100px] h-[100px] object-fit rounded-2xl border border-black"
             />
           </div>
           <div className="w-full">
             <img
-              src={product.image}
+              src={product.images}
               alt={product.name}
               className="md:w-[600px] w-full h-[660px] object-fit "
             />

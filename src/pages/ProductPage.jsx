@@ -60,9 +60,12 @@ const ProductPage = ({ product }) => {
         <div className="w-full">
           <div className="mx-2 rounded my-4 relative transform transition-transform duration-300">
             {/* Product Image */}
-            <Link to={`/collections/${product.id}`}>
+            <Link to={`/collections/${product._id}`}>
               <div className="w-full h-[300px] relative">
-                <img src={product.image} className="w-full h-full object-fit" />
+                <img
+                  src={product.images}
+                  className="w-full h-full object-fit"
+                />
                 {/* "On Sale" Badge */}
                 <div
                   className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold py-1 px-3 "

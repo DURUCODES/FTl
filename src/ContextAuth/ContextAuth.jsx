@@ -7,44 +7,40 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
 
-  const login = (token, userData) => {
-    setToken(token);
-    setIsAuthenticated(true);
-    setUser(userData); // Store user data in context
-    localStorage.setItem("token", token); // Save token in local storage
-    console.log("User logged in", "Token:", token);
-    localStorage.setItem("userData", JSON.stringify(userData)); // Save user data in local storage
-  };
-
   useEffect(() => {
-    // Check if a token and user data are already saved in localStorage
-
     const token = localStorage.getItem("token");
-    const savedUserData = localStorage.getItem("userData");
+    const savedUserData = localStorage.getItem("user");
     if (token && savedUserData) {
-      console.log(
-        "User logged in automatically",
-        JSON.parse(savedUserData),
-        "Token:",
-        token
-      );
-      setToken(token);
-      setIsAuthenticated(true);
-      setUser(JSON.parse(savedUserData)); // Parse and load user data from localStorage
+      try {
+        const parsedUserData = JSON.parse(savedUserData);
+        setIsAuthenticated(true);
+        setUser(parsedUserData);
+      } catch (error) {
+        console.error("Error parsing user data", error);
+        localStorage.removeItem("token");
+        localStorage.removeItem("userData");
+      }
     }
   }, []);
 
   const logout = () => {
     setToken(null);
     setIsAuthenticated(false);
-    setUser(null); // Clear user data
-    localStorage.removeItem("token"); // Clear token from localStorage
-    localStorage.removeItem("userData"); // Clear user data from localStorage
+    setUser(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("userData");
   };
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, login, logout, token, user }}
+      value={{
+        isAuthenticated,
+        setIsAuthenticated,
+        setUser,
+        logout,
+        token,
+        user,
+      }}
     >
       {children}
     </AuthContext.Provider>
